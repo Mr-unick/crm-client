@@ -15,7 +15,7 @@ const UploadLeads = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen w-screen  ">
-      <div className="bg-white rounded-lg  p-6 max-w-md w-full mr-40">
+      <div className="bg-white rounded-lg  p-6 max-w-md w-full lg:mr-40">
         <div className="flex items-center justify-center mb-4">
           <Upload size={48} className="text-gray-400" />
         </div>

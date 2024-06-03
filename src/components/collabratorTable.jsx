@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 
 
@@ -52,13 +53,10 @@ const CollabratorTable = () => {
   };
 
   return (
-    <div className="flex flex-col  p-5 justify-start items-start ml-3 ">
+    <div className="flex flex-col  px-1 py-3 justify-start items-start ml-3 mt-8  ">
       <Dialog>
         <DialogTrigger>
-          <Button
-            varient="outline"
-           className="mb-4"
-          >
+          <Button varient="outline" className="mb-4">
             Add New Collabrator
           </Button>
         </DialogTrigger>
@@ -136,69 +134,72 @@ const CollabratorTable = () => {
           </form>
         </DialogContent>
       </Dialog>
-      <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md w-[70rem]">
-        <thead className="bg-gray-50"></thead>
-        <thead className="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Email
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Level
-            </th>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {employees.map((employee) => (
-            <tr key={employee.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
-                {employee.name}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
-                {employee.email}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                {employee.level}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap  text-sm font-medium text-start gap-4">
-                <Button
-                  size={"sm"}
-                  className="bg-black text-white w-1/3 mr-4 p-1"
-                  onClick={() => handleEdit(employee.id)}
-                >
-                  Edit
-                </Button>
-                <Button
-                  variant="outline"
-                  size={"sm"}
-                  className="text-black border-[1px] border-black w-1/3 mr-4 p-1"
-                  onClick={() => handleRemove(employee.id)}
-                >
-                  Delete
-                </Button>
-              </td>
+
+      <div className="overflow-auto  w-full">
+        <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md lg:w-[70rem]">
+          <thead className="bg-gray-50"></thead>
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Email
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Level
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Actions
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {employees.map((employee) => (
+              <tr key={employee.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+                  {employee.name}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+                  {employee.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  {employee.level}
+                </td>
+                <td className="px-6 lg:py-4 py-2 whitespace-nowrap  text-sm font-medium text-start gap-4">
+                  <Button
+                    size={"sm"}
+                    className="w-1/2 mr-2"
+                    onClick={() => handleEdit(employee.id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size={"sm"}
+                    className="w-1/2 mr-2"
+                    onClick={() => handleRemove(employee.id)}
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

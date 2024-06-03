@@ -38,14 +38,14 @@ const Sidebar = () => {
           className="p-2 text-gray-700 hover:text-gray-900 transition duration-200 focus:outline-none z-50"
           onClick={toggleSidebar}
         >
-          {isOpen ? <X size={26} color="white" /> : <Menu size={26} />}
+          {isOpen ? <X size={28} color="white" /> : <Menu size={28} />}
         </button>
       </div>
 
       {/* Sidebar */}
       <div
         className={`${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          isOpen ? "translate-x-0 w-[50%]" : "-translate-x-full"
         } md:translate-x-0 fixed md:relative bg-gray-800 text-white transition-transform duration-300 ease-in-out w-[11rem] h-screen flex flex-col justify-between`}
       >
         <div>
