@@ -60,8 +60,8 @@ function App() {
           <Route path="uploadleads" Component={UploadLeads} />
           <Route path="newleads" Component={NewLeadsTable} />
         </Route>
-
-        <Route path="/" Component={Tests} />
+        <Route path="/" Component={LoginPage} />
+        <Route path="/test" Component={Tests} />
       </Routes>
     </BrowserRouter>
   );
