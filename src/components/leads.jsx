@@ -51,26 +51,26 @@ export const Leads = (props) => {
         </div>
       </Drawer>
 
-      <Tabs defaultValue="all" className=" overflow-hidden ">
-        <TabsList className="w-1/3">
-          <TabsTrigger value="all" className="w-1/3">
+      <Tabs defaultValue="all" className=" overflow-hidden mt-8 lg:mt-0">
+        <TabsList className="lg:w-1/3 w-[100%]">
+          <TabsTrigger value="all" className="lg:w-1/3 ">
             All Leads
           </TabsTrigger>
-          <TabsTrigger value="table" className="w-1/3">
+          <TabsTrigger value="table" className="lg:w-1/3">
             Table View
           </TabsTrigger>
-          <TabsTrigger value="board" className="w-1/3">
+          <TabsTrigger value="board" className="lg:w-1/3">
             Board View
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="all" className="overflow-x-auto">
+        <TabsContent value="all" className="overflow-x-auto ">
           <AllLeads />
         </TabsContent>
-        <TabsContent value="table" className="overflow-x-auto">
+        <TabsContent value="table" className="overflow-x-auto ">
           <LeadTable />
         </TabsContent>
-        <TabsContent value="board" className="overflow-x-auto">
-         <BoardLeads/>
+        <TabsContent value="board" className="overflow-x-auto ">
+          <BoardLeads />
         </TabsContent>
       </Tabs>
 

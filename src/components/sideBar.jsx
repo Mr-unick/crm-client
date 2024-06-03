@@ -31,14 +31,14 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen z-10">
       {/* Mobile Sidebar Toggle Button */}
       <div className="md:hidden">
         <button
-          className="p-2 text-gray-700 hover:text-gray-900 transition duration-200 focus:outline-none"
+          className="p-2 text-gray-700 hover:text-gray-900 transition duration-200 focus:outline-none z-50"
           onClick={toggleSidebar}
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={26} color="white" /> : <Menu size={26} />}
         </button>
       </div>
 
@@ -49,7 +49,16 @@ const Sidebar = () => {
         } md:translate-x-0 fixed md:relative bg-gray-800 text-white transition-transform duration-300 ease-in-out w-[11rem] h-screen flex flex-col justify-between`}
       >
         <div>
-          <div className="px-6 py-4"></div>
+          <div className="px-6 py-4 relative">
+            <div className="md:hidden">
+              <button
+                className="p-1 text-gray-700 hover:text-gray-900 transition duration-200 focus:outline-none z-50 absolute top-0 right-0"
+                onClick={toggleSidebar}
+              >
+                {isOpen ? <X size={24} color="white" /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
           <nav>
             <ul className="space-y-2">
               {navItems.map((item, index) => (
@@ -68,7 +77,7 @@ const Sidebar = () => {
         </div>
         <div className="px-6 py-4">
           <button className="bg-gray-700 text-white py-1 px-4 rounded-md hover:bg-gray-600 transition duration-200 w-full">
-            Logout 
+            Logout
           </button>
         </div>
       </div>

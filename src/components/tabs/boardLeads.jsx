@@ -13,7 +13,7 @@ export const BoardLeads = (props) => {
             Prospect
           </span>
         </div>
-        <ScrollArea className="h-[34rem]" type="none">
+        <ScrollArea className="h-[34rem] -z-10" type="none">
           {[1, 2, 3, 4, 5, 6].map((lead, index) => {
             return <BoardCard />;
           })}
@@ -25,7 +25,7 @@ export const BoardLeads = (props) => {
             Prospect
           </span>
         </div>
-        <ScrollArea className="h-[34rem]" type="none">
+        <ScrollArea className="h-[34rem] -z-10" type="none">
           {[1, 2, 3, 4, 5, 6].map((lead, index) => {
             return <BoardCard />;
           })}
@@ -37,7 +37,7 @@ export const BoardLeads = (props) => {
             Prospect
           </span>
         </div>
-        <ScrollArea className="h-[34rem]" type="none">
+        <ScrollArea className="h-[34rem] -z-10" type="none">
           {[1, 2, 3, 4, 5, 6].map((lead, index) => {
             return <BoardCard />;
           })}
@@ -49,7 +49,7 @@ export const BoardLeads = (props) => {
             Prospect
           </span>
         </div>
-        <ScrollArea className="h-[34rem]" type="none">
+        <ScrollArea className="h-[34rem] -z-10" type="none">
           {[1, 2, 3, 4, 5, 6].map((lead, index) => {
             return <BoardCard />;
           })}
@@ -61,7 +61,7 @@ export const BoardLeads = (props) => {
             Prospect
           </span>
         </div>
-        <ScrollArea className="h-[34rem]" type="none">
+        <ScrollArea className="h-[34rem] -z-10" type="none">
           {[1, 2, 3, 4, 5, 6].map((lead, index) => {
             return <BoardCard />;
           })}
