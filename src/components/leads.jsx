@@ -51,7 +51,7 @@ export const Leads = (props) => {
         </div>
       </Drawer>
 
-      <Tabs defaultValue="account" className=" overflow-hidden ">
+      <Tabs defaultValue="all" className=" overflow-hidden ">
         <TabsList className="w-1/3">
           <TabsTrigger value="all" className="w-1/3">
             All Leads
