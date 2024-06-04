@@ -60,12 +60,8 @@ const CollabratorTable = () => {
             Add New Collabrator
           </Button>
         </DialogTrigger>
-        <DialogContent className="bg-white flex justify-center items-center flex-col">
-          <DialogHeader className={"text-start"}>
-            {" "}
-            Add New Collabrator
-          </DialogHeader>
-          <form className="w-[80%]">
+        <DialogContent className="bg-white flex justify-center items-center flex-col w-[300px] lg:w-[40%]">
+          <form className="lg:w-[80%] w-[90%] ">
             <div>
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
@@ -135,8 +131,8 @@ const CollabratorTable = () => {
         </DialogContent>
       </Dialog>
 
-      <div className="overflow-auto  w-full">
-        <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md lg:w-[70rem]">
+      <div className="overflow-auto  w-full rounded-md">
+        <table className="min-w-full divide-y divide-gray-200 border-[1px]  lg:w-[70rem] rounded-md">
           <thead className="bg-gray-50"></thead>
           <thead className="bg-gray-50">
             <tr>

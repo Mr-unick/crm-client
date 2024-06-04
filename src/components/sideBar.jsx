@@ -31,7 +31,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex h-screen z-10">
+    <div className="flex h-screen ">
       {/* Mobile Sidebar Toggle Button */}
       <div className="md:hidden">
         <button
@@ -45,7 +45,7 @@ const Sidebar = () => {
       {/* Sidebar */}
       <div
         className={`${
-          isOpen ? "translate-x-0 w-[50%]" : "-translate-x-full"
+          isOpen ? "translate-x-0 w-[50%] z-50" : "-translate-x-full"
         } md:translate-x-0 fixed md:relative bg-gray-800 text-white transition-transform duration-300 ease-in-out w-[11rem] h-screen flex flex-col justify-between`}
       >
         <div>
@@ -59,10 +59,10 @@ const Sidebar = () => {
               </button>
             </div>
           </div>
-          <nav>
-            <ul className="space-y-2">
+          <nav >
+            <ul className="space-y-2 z-50">
               {navItems.map((item, index) => (
-                <li key={index}>
+                <li key={index} className="z-50">
                   <a
                     href={item.link}
                     className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"

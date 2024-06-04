@@ -157,7 +157,7 @@ const NewLeadsTable = () => {
 
   return (
     <div className="overflow-x-auto ml-8">
-      <div className="mb-4 flex mt-3">
+      <div className=" hidden mb-4 lg:flex mt-3">
         <Select
           isMulti
           value={selectedCollabrators}
@@ -177,65 +177,73 @@ const NewLeadsTable = () => {
           onClick={handleApplyCollabrators}
           className="ml-4 px-4 py-1 bg-black w-[20%] text-white rounded-md"
         >
-          Apply {" "} Changes
+          Apply Changes
         </button>
       </div>
-      <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md w-[70rem] mb-5">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <input
-                type="checkbox"
-                checked={selectedRows.length === leads.length}
-                onChange={handleSelectAllRows}
-              />
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Email
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Level
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Collaborators
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Priority
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {leads.map(employee => (
-            <tr key={employee.id}>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+
+      <div className="flex lg:hidden  justify-center items-center  w-64  h-screen">
+        Cant Acces From Mobile
+      </div>
+      <div className="lg:flex justify-center items-center hidden ">
+        <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md w-[70rem] mb-5">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input
                   type="checkbox"
-                  checked={selectedRows.includes(employee.id)}
-                  onChange={() => handleSelectRow(employee.id)}
+                  checked={selectedRows.length === leads.length}
+                  onChange={handleSelectAllRows}
                 />
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
-                {employee.name}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
-                {employee.email}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                {employee.level}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                {employee.collabrators ? employee.collabrators.join(', ') : 'None'}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                {employee.priority || 'None'}
-              </td>
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Name
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Level
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Collaborators
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Priority
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {leads.map((employee) => (
+              <tr key={employee.id}>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(employee.id)}
+                    onChange={() => handleSelectRow(employee.id)}
+                  />
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+                  {employee.name}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
+                  {employee.email}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  {employee.level}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  {employee.collabrators
+                    ? employee.collabrators.join(", ")
+                    : "None"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  {employee.priority || "None"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

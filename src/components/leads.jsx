@@ -63,13 +63,13 @@ export const Leads = (props) => {
             Board View
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="all" className="overflow-x-auto ">
+        <TabsContent value="all" >
           <AllLeads />
         </TabsContent>
         <TabsContent value="table" className="overflow-x-auto ">
           <LeadTable />
         </TabsContent>
-        <TabsContent value="board" className="overflow-x-auto ">
+        <TabsContent value="board" className=" ">
           <BoardLeads />
         </TabsContent>
       </Tabs>
