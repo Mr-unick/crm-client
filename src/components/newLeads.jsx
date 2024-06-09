@@ -1,5 +1,7 @@
+import { getLeads } from "@/services/leadsApi";
 import React, { useState } from "react";
 import Select from 'react-select';
+import { useToast } from "@/components/ui/use-toast";
 
 
 const data = [
@@ -108,6 +110,18 @@ const NewLeadsTable = () => {
   const [selectedCollabrators, setSelectedCollabrators] = useState([]);
   const [selectPriority, setSelectPriority] = useState(null);
   const [leads, setLeads] = useState(data);
+   const { toast } = useToast();
+
+
+  const getLeadsData = async (token) => {
+    const res = await getLeads(token);
+    console.log(res);
+  };
+
+  useState(()=>{
+  let user=JSON.parse(localStorage.getItem('user'));
+  getLeadsData(user.token)
+  })
 
   const collabratorOptions = [
     { value: 'alice', label: 'Alice Johnson' },
@@ -157,6 +171,16 @@ const NewLeadsTable = () => {
 
   return (
     <div className="overflow-x-auto ml-8">
+      <button
+        onClick={() => {
+          toast({
+            title: "Scheduled: Catch up",
+            description: "Friday, February 10, 2023 at 5:57 PM",
+          });
+        }}
+      >
+        Show Toast
+      </button>
       <div className=" hidden mb-4 lg:flex mt-3">
         <Select
           isMulti

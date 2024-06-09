@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { signInCollaborator } from "@/services/collabratorApi";
+import { useNavigate } from "react-router-dom";
+import { LoginContext } from "@/App";
+import DeatilsDrawer from "@/components/Drawer";
+
 
 export function LoginPage() {
+
+  const [loginData,SetLoginData]=useState({})
+  const[open,setopen]=useState(false)
+  const navigate=useNavigate()
+
+  const setauth=useContext(LoginContext)
+
+  const handlechange=(e)=>{
+    
+ SetLoginData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  const handlelogin=async()=>{
+  console.log(loginData);
+   let res= await signInCollaborator(loginData);
+   if(res.status==200){
+    localStorage.setItem('user',JSON.stringify(res));
+    setauth(true);
+    navigate('/dash')
+   }
+
+  }
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen p-1 text-primary ">
@@ -106,9 +133,10 @@ export function LoginPage() {
             </div>
           </div>
         </div>
-        <div className="">
+       
+        <DeatilsDrawer open={open} setopen={setopen}><h1>hello</h1></DeatilsDrawer>
+        <div className="flex lg:hidden">
           <img src="./login.jpg" />
-
         </div>
         <div className="flex items-center justify-center px-4 py-0 sm:px-6 sm:py-16 lg:px-8 lg:py-24 -mt-20  lg:mt-0">
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md  w-[90%]">
@@ -126,9 +154,11 @@ export function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
+                      name="email"
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                      type="password"
-                      placeholder="Password"
+                      type="email"
+                      placeholder="Enter Username"
+                      onChange={handlechange}
                     ></input>
                   </div>
                 </div>
@@ -152,18 +182,21 @@ export function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
+                    name="password"
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Password"
+                      onChange={handlechange}
                     ></input>
                   </div>
                 </div>
                 <div>
                   <Button
+                   onClick={handlelogin}
                     type="button"
                     className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   >
-                   Login
+                    Login
                   </Button>
                 </div>
               </div>

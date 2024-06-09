@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Phone,
   MapPin,
@@ -20,6 +20,9 @@ import {
   Route,
   ShieldCheck,
   CircleHelp,
+  Pencil,
+  CircleArrowLeft,
+  CircleArrowRight,
 } from "lucide-react";
 import {
   Stepper,
@@ -28,6 +31,15 @@ import {
   StepContent,
   Typography,
 } from "@mui/material";
+import CommentSection from "./commentsection";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 
 const steps = [
@@ -129,40 +141,124 @@ const leaddata = {
 };
 
 
-const LeadDeatilsTable=({lead})=>{
+const LeadDeatilsTable = ({ lead, edit }) => {
+
   return (
     <div className="  w-[60%] mb-10">
-      <div className="grid grid-cols-2 gap-4 text-sm">
+      <div className="grid grid-cols-2 gap-4 text-sm w-64 lg:w-full ">
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Mail size={18} /> Email
         </div>
-        <div>{lead.Email}</div>
+        <div>
+          {edit ? (
+            <input
+              type="text"
+              readOnly={false}
+              defaultValue={lead.Email}
+              className="border-[1px] outline-none px-1 py-1 w-full"
+            />
+          ) : (
+            lead.Email
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Phone size={18} /> Phone
         </div>
-        <div>{lead.Phone}</div>
+        <div>
+          {edit ? (
+            <input
+              type="text"
+              readOnly={false}
+              defaultValue={lead.Phone}
+              className="border-[1px] outline-none px-1 py-1 w-full"
+            />
+          ) : (
+            lead.Phone
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Phone size={18} /> Second Phone
         </div>
-        <div>{lead.SecondPhone}</div>
+        <div>
+          {edit ? (
+            <input
+              type="text"
+              readOnly={false}
+              defaultValue={lead.SecondPhone}
+              className="border-[1px] outline-none px-1 py-1 w-full"
+            />
+          ) : (
+            lead.SecondPhone
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <MapPinned size={18} />
           Address
         </div>
-        <div>{lead.Address}</div>
+        <div>
+          {edit ? (
+            <input
+              type="text"
+              readOnly={false}
+              defaultValue={lead.Address}
+              className="border-[1px] outline-none px-1 py-1 w-full"
+            />
+          ) : (
+            lead.Address
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pause size={18} /> Status
         </div>
-        <div>{lead.Status}</div>
+        <div>
+          {edit ? (
+            <input
+              type="text"
+              readOnly={false}
+              defaultValue={lead.Status}
+              className="border-[1px] outline-none px-1 py-1 w-full"
+            />
+          ) : (
+            lead.Status
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <ShieldCheck size={18} />
           Priority
         </div>
-        <div>{lead.Priority}</div>
+        <div>
+          {edit ? (
+            <select
+              className="border-[1px] outline-none px-1 py-1 w-full"
+              defaultValue={lead.Priority}
+            >
+              <option value="high">high</option>
+              <option value="high">low</option>
+              <option value="high">Medium</option>
+            </select>
+          ) : (
+            lead.Priority
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Route size={18} /> Stage
         </div>
-        <div>{lead.Stage}</div>
+        <div>
+          {edit ? (
+            <select
+              className="border-[1px] outline-none px-1 py-1 w-full"
+              defaultValue={lead.Stage}
+            >
+              <option value="high">Prospect</option>
+              <option value="high">Opportunity</option>
+              <option value="high">Qualified</option>
+              <option value="high">Nurture</option>
+              <option value="high">Reprospect</option>
+            </select>
+          ) : (
+            lead.Stage
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Collaborators
         </div>
@@ -186,11 +282,14 @@ const LeadDeatilsTable=({lead})=>{
       </div>
     </div>
   );
-}
+};
 
 
 
-const LeadDetails = () => {
+const LeadDetails = ({lead}) => {
+  console.log(lead,"from comp");
+  
+  const[edit,setedit]=useState(false)
 
   const Usercon =()=>{
   return <div className="rounded-full bg-gray-300 p-1">
@@ -199,10 +298,35 @@ const LeadDetails = () => {
 }
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md px-10">
+    <div className="bg-white p-4 rounded-lg shadow-md lg:px-10 ">
+      <div className="flex gap-2">
+        <button
+          onClick={() => {
+            setedit(true);
+          }}
+        >
+          <Pencil size={18} color="gray" />
+        </button>
+        <button
+          onClick={() => {
+            setedit(true);
+          }}
+        >
+          <CircleArrowLeft size={18} color="gray" />
+        </button>
+        <button
+          onClick={() => {
+            setedit(true);
+          }}
+        >
+          <CircleArrowRight size={18} color="gray" />
+        </button>
+      </div>
       <h2 className="text-2xl font-bold my-6">Ajay Gupta</h2>
-     <LeadDeatilsTable lead={leaddata}/>
-     
+
+      <LeadDeatilsTable lead={leaddata} edit={edit} />
+
+      {edit && <CommentSection />}
 
       {steps.map((step, index) => (
         <div className="my-7 text-sm">
@@ -222,7 +346,7 @@ const LeadDetails = () => {
             as needed. The comment section should be designed in a simple and
             modern way, using Tailwind CSS for styling.
           </p>
-      
+
           {/* {file && (
             <div className="bg-white p-4 rounded-lg shadow-md">
               {file.type === "image" && (

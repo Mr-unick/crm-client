@@ -13,57 +13,48 @@ import CollabratorTable from "@/components/collabratorTable";
 import UploadLeads from "@/components/uploadLeads";
 import { LoginPage } from "@/pages/loginPage";
 import NewLeadsTable from "./components/newLeads";
-import { useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import NotionComponent from "./testpage";
 
-const Tests = () => {
-  const data = {
-    // console.log(data.projects[0].subjects[0].email)
-    projects: [
-      {
-        name: "Project Alpha",
-        description:
-          "This project involves developing a new software application for managing inventory.",
 
-        subjects: ["maths", "english", "hindi"],
-      },
-    ],
-  };
 
-  // console.log(data.projects[0]);
-  // console.log(data.projects[1].subjects[1]);
-  console.log(data.projects[0].subjects);
 
-  return (
-    <div>
-      <h1 className="text-red-300">Test Comp</h1>
-
-      {data.projects[0].subjects.map((sub, index) => {
-        return <h1 key={index}>{sub}</h1>;
-      })}
-    </div>
-  );
-};
+export const LoginContext = createContext();
 
 function App() {
-  const [isauth, setauth] = useState(true);
+  
+// const [isauth, setauth] = useState(localStorage.getItem("user") !== null);
+const [isauth, setauth] = useState(true);
 
+useEffect(()=>{
+let loggedinuser=localStorage.getItem('user');
+if(loggedinuser !== null || undefined){
+setauth(true)
+}
+},[isauth])
+
+
+console.log(isauth);
   const Protected = () => {
+    
     return isauth ? <Dashboard /> : <Navigate to={"/"} />;
   };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/dash" Component={Protected}>
-          <Route path="" Component={Leads} />
-          <Route path="collabrators" Component={CollabratorTable} />
-          <Route path="uploadleads" Component={UploadLeads} />
-          <Route path="newleads" Component={NewLeadsTable} />
-        </Route>
-        <Route path="/" Component={LoginPage} />
-        <Route path="/test" Component={Tests} />
-      </Routes>
-    </BrowserRouter>
+    <LoginContext.Provider value={setauth}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/dash" Component={Protected}>
+            <Route path="" Component={Leads} />
+            <Route path="collabrators" Component={CollabratorTable} />
+            <Route path="uploadleads" Component={UploadLeads} />
+            <Route path="newleads" Component={NewLeadsTable} />
+          </Route>
+          <Route path="/" Component={LoginPage} />
+          {/* <Route path="/" Component={NotionComponent} /> */}
+        </Routes>
+      </BrowserRouter>
+    </LoginContext.Provider>
   );
 }
 

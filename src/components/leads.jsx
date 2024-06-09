@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { LeadTable } from './leadsTable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -27,29 +27,18 @@ import { BoardLeads } from './tabs/boardLeads';
 export const Leads = (props) => {
     const [activeTab, setActiveTab] = useState("All Leads");
     const [isOpen, setIsOpen] = useState(false);
+    const[lead,setlead]=useState(null);
 
-    const toggleDrawer = (open) => (event) => {
-      if (
-        event.type === "keydown" &&
-        (event.key === "Tab" || event.key === "Shift")
-      ) {
-        return;
-      }
-      setIsOpen(open);
-
-    };
-
-    const handleTabChange = (tab) => {
-      setActiveTab(tab);
-    };
-
+    const toggleDrawer = useCallback((lead) => {
+      setlead(lead);
+      setIsOpen(false?true:false);
+      console.log("ooo");
+     
+    }
+,[])
+  console.log(isOpen,'isopen');
   return (
     <div className=" lg:ml-5 mb-6  px-3   ">
-      <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
-        <div className="w-[50rem]">
-          <LeadDetails />
-        </div>
-      </Drawer>
 
       <Tabs defaultValue="all" className=" overflow-hidden mt-8 lg:mt-0">
         <TabsList className="lg:w-1/3 w-[100%]">
@@ -63,14 +52,14 @@ export const Leads = (props) => {
             Board View
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="all" >
-          <AllLeads />
+        <TabsContent value="all" className="overflow-x-auto">
+          <AllLeads toggleDrawer={toggleDrawer} setlead={setlead} />
         </TabsContent>
         <TabsContent value="table" className="overflow-x-auto ">
           <LeadTable />
         </TabsContent>
-        <TabsContent value="board" className=" ">
-          <BoardLeads />
+        <TabsContent value="board" className="overflow-x-auto">
+          <BoardLeads toggleDrawer={toggleDrawer} />
         </TabsContent>
       </Tabs>
 

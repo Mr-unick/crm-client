@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Delete, Edit, Trash2 } from "lucide-react";
 import {
   Dialog,
@@ -25,6 +25,9 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 
 const CollabratorTable = () => {
+
+  const[CollabratorData,setCollabratorData]=useState({})
+
   const employees = [
     { id: 1, email: "john@example.com", level: "Operation Manager", name: "Nikhil Lende " },
     {
@@ -52,6 +55,16 @@ const CollabratorTable = () => {
     console.log(`Removing employee with ID: ${employeeId}`);
   };
 
+  const handlechange=(e)=>{
+   setCollabratorData((prevState) => ({
+     ...prevState,
+     [e.target.name]: e.target.value,
+   }));
+  }
+
+  const handlSubmit=()=>{
+    console.log(CollabratorData);
+  }
   return (
     <div className="flex flex-col  px-1 py-3 justify-start items-start ml-3 mt-8  ">
       <Dialog>
@@ -66,6 +79,8 @@ const CollabratorTable = () => {
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
                 <input
+                  onChange={handlechange}
+                  name="name"
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   type="text"
                   placeholder="Enter Name"
@@ -76,6 +91,8 @@ const CollabratorTable = () => {
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
                 <input
+                  onChange={handlechange}
+                  name="email"
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   type="email"
                   placeholder="Enter Email"
@@ -83,18 +100,36 @@ const CollabratorTable = () => {
               </div>
             </div>
             <div className="mt-2 w-full">
-              <Select className="mt-2">
+              <Select
+                onValueChange={(value) =>
+                  setCollabratorData((prevState) => ({
+                    ...prevState,
+                   'level': value,
+                  }))
+                }
+                
+                className="mt-2"
+              >
                 <SelectTrigger className="border border-gray-300">
                   <SelectValue placeholder="Select Level" />
                 </SelectTrigger>
                 <SelectContent className="bg-white placeholder:text-gray-400 ">
-                  <SelectItem value="light" className="hover:bg-slate-400">
+                  <SelectItem
+                    value="Sales Professional"
+                    className="hover:bg-slate-400"
+                  >
                     Sales Professional
                   </SelectItem>
-                  <SelectItem value="dark" className="hover:bg-slate-400">
+                  <SelectItem
+                    value="Interior Designer"
+                    className="hover:bg-slate-400"
+                  >
                     Interior Designer
                   </SelectItem>
-                  <SelectItem value="system" className="hover:bg-slate-400">
+                  <SelectItem
+                    value="Operation Manager"
+                    className="hover:bg-slate-400"
+                  >
                     Operation Manager
                   </SelectItem>
                 </SelectContent>
@@ -104,6 +139,8 @@ const CollabratorTable = () => {
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
                 <input
+                  onChange={handlechange}
+                  name="password"
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   type="password"
                   placeholder="Enter Password"
@@ -114,6 +151,8 @@ const CollabratorTable = () => {
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
                 <input
+                  onChange={handlechange}
+                  name="confirmpassword"
                   className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                   type="password"
                   placeholder="Confirm Password"
@@ -122,6 +161,7 @@ const CollabratorTable = () => {
             </div>
 
             <button
+              onClick={handlSubmit}
               type="button"
               className="rounded-md bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black my-4 w-full"
             >
