@@ -5,6 +5,7 @@ import { signInCollaborator } from "@/services/collabratorApi";
 import { useNavigate } from "react-router-dom";
 import { LoginContext } from "@/App";
 import DeatilsDrawer from "@/components/Drawer";
+import { ToastContainer, toast } from "react-toastify";
 
 
 export function LoginPage() {
@@ -30,6 +31,18 @@ export function LoginPage() {
    }
 
   }
+
+  const notify = () => {
+    toast("This is a default toast!" ,{
+        autoClose: 8000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: 0.5,
+    });
+  };
+
   return (
     <section>
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen p-1 text-primary ">
@@ -133,8 +146,8 @@ export function LoginPage() {
             </div>
           </div>
         </div>
-       
-        <DeatilsDrawer open={open} setopen={setopen}><h1>hello</h1></DeatilsDrawer>
+        {/* <button onClick={notify}>CLick</button>
+        <ToastContainer /> */}
         <div className="flex lg:hidden">
           <img src="./login.jpg" />
         </div>
@@ -182,7 +195,7 @@ export function LoginPage() {
                   </div>
                   <div className="mt-2">
                     <input
-                    name="password"
+                      name="password"
                       className="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-gray-400 focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
                       type="password"
                       placeholder="Password"
@@ -192,7 +205,7 @@ export function LoginPage() {
                 </div>
                 <div>
                   <Button
-                   onClick={handlelogin}
+                    onClick={handlelogin}
                     type="button"
                     className="inline-flex w-full items-center justify-center rounded-md bg-black px-3.5 py-2.5 font-semibold leading-7 text-white hover:bg-black/80"
                   >

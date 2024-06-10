@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Phone,
   MapPin,
@@ -40,6 +40,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LeadContext } from "@/comtextapi/leadcontext";
+
 
 
 const steps = [
@@ -117,35 +119,27 @@ const steps = [
 ];
 
 
-const leaddata = {
-  Name: "Ivy Brown",
-  Email: "ivyb@example.com",
-  Phone: "012-345-6789",
-  SecondPhone: "901-234-5678",
-  Address: "123 Willow St, Anystate, USA",
-  Status: "Inactive",
-  Priority: "Low",
-  Stage: "Qualified",
-  Collaborators: ["Henry White", "Jack Gray"],
-  BranchCode: "BR010",
-  Remainder: "Verify qualification criteria",
-  Source: "SEO",
-  DateTimeAdded: "2024-06-02T11:30:00Z",
-  Comments: [
-    {
-      Comment: "Passed initial qualification.",
-      User: "Henry White",
-      "Date Time": "2024-06-02T11:35:00Z",
-    },
-  ],
-};
+
+
 
 
 const LeadDeatilsTable = ({ lead, edit }) => {
+   const stageColors = {
+     prospect: "text-gray-500",
+     opportunity: "text-blue-500",
+     qualified: "text-green-500",
+     nurture: "text-orange-500",
+     reprospect: "text-purple-500",
+   };
 
+   const priorityColors = {
+     high: "text-red-500",
+     medium: "text-yellow-500",
+     low: "text-green-500",
+   };
   return (
-    <div className="  w-[60%] mb-10">
-      <div className="grid grid-cols-2 gap-4 text-sm w-64 lg:w-full ">
+    <div className="w-[60%] mb-10">
+      <div className="grid grid-cols-2 gap-4 text-sm w-64 lg:w-full">
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Mail size={18} /> Email
         </div>
@@ -154,11 +148,11 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Email}
+              defaultValue={lead.email}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Email
+            lead.email
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -169,11 +163,11 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Phone}
+              defaultValue={lead.phone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Phone
+            lead.phone
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -184,27 +178,26 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.SecondPhone}
+              defaultValue={lead.secondphone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.SecondPhone
+            lead.secondphone
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <MapPinned size={18} />
-          Address
+          <MapPinned size={18} /> Address
         </div>
         <div>
           {edit ? (
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Address}
+              defaultValue={lead.address}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Address
+            lead.address
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -215,29 +208,28 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Status}
+              defaultValue={lead.status}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Status
+            lead.status
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <ShieldCheck size={18} />
-          Priority
+          <ShieldCheck size={18} /> Priority
         </div>
         <div>
           {edit ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.Priority}
+              defaultValue={lead.priority}
             >
-              <option value="high">high</option>
-              <option value="high">low</option>
-              <option value="high">Medium</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
             </select>
           ) : (
-            lead.Priority
+            lead.priority
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -247,38 +239,38 @@ const LeadDeatilsTable = ({ lead, edit }) => {
           {edit ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.Stage}
+              defaultValue={lead.stage}
             >
-              <option value="high">Prospect</option>
-              <option value="high">Opportunity</option>
-              <option value="high">Qualified</option>
-              <option value="high">Nurture</option>
-              <option value="high">Reprospect</option>
+              <option value="prospect">Prospect</option>
+              <option value="opportunity">Opportunity</option>
+              <option value="qualified">Qualified</option>
+              <option value="nurture">Nurture</option>
+              <option value="reprospect">Reprospect</option>
             </select>
           ) : (
-            lead.Stage
+            lead.stage
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Collaborators
         </div>
-        <div>{lead.Collaborators.join(", ")}</div>
+        <div>{lead.collaborators.join(", ")}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
         </div>
-        <div>{lead.BranchCode}</div>
+        <div>{lead.branchcode}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <BellRing size={18} /> Remainder
         </div>
-        <div>{lead.Remainder}</div>
+        <div>{lead.remainder}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CircleHelp size={18} /> Source
         </div>
-        <div>{lead.Source}</div>
+        <div>{lead.source}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CalendarClock size={18} /> Date Time Added
         </div>
-        <div>{lead.DateTimeAdded}</div>
+        <div>{lead.datetimeadded}</div>
       </div>
     </div>
   );
@@ -286,8 +278,13 @@ const LeadDeatilsTable = ({ lead, edit }) => {
 
 
 
-const LeadDetails = ({lead}) => {
-  console.log(lead,"from comp");
+
+
+const LeadDetails = () => {
+
+  const { handleNext, handlePrev ,lead} =useContext(LeadContext);
+
+  console.log(lead, "from comp");
   
   const[edit,setedit]=useState(false)
 
@@ -307,28 +304,20 @@ const LeadDetails = ({lead}) => {
         >
           <Pencil size={18} color="gray" />
         </button>
-        <button
-          onClick={() => {
-            setedit(true);
-          }}
-        >
+        <button onClick={handlePrev}>
           <CircleArrowLeft size={18} color="gray" />
         </button>
-        <button
-          onClick={() => {
-            setedit(true);
-          }}
-        >
+        <button onClick={handleNext}>
           <CircleArrowRight size={18} color="gray" />
         </button>
       </div>
-      <h2 className="text-2xl font-bold my-6">Ajay Gupta</h2>
+      <h2 className="text-2xl font-bold my-6">{lead?.name}</h2>
 
-      <LeadDeatilsTable lead={leaddata} edit={edit} />
+      <LeadDeatilsTable lead={lead} edit={edit} />
 
       {edit && <CommentSection />}
 
-      {steps.map((step, index) => (
+      {lead?.comments?.map((step, index) => (
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
             <img
