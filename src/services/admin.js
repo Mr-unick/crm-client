@@ -3,7 +3,7 @@ import axios from "axios";
 export const signInAdmin = async (Admindata) => {
   try {
     const response = await axios.post(
-      `http://localhost:4000/admin/signin`,
+      `https://crm-server-zeta.vercel.app/admin/signin`,
       Admindata
     );
 
