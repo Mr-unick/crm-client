@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const [isOpen, setIsOpen] = useState(false);
  const navigate=useNavigate()
 
 let loggedinuser = localStorage.getItem("user");
+
 let user =JSON.parse(loggedinuser);
 let level =user?.level;
 
@@ -76,7 +77,7 @@ let level =user?.level;
             </div>
           </div>
           <nav>
-            {localStorage.getItem("isadmin") ? (
+            {level==="admin" ? (
               <ul className="space-y-2 z-50">
                 {navItems.map((item, index) => (
                   <li key={index} className="z-50">
