@@ -1,15 +1,15 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:4000/";
+const baseUrl = "https://crm-server-zeta.vercel.app/";
 
 // Collaborator API calls
-const addCollaborator = async (token, collaboratorData) => {
+export const addCollaborator = async (token, collaboratorData) => {
   try {
     const response = await axios.post(
-      `${baseUrl}/collaborators/addcollaborator`,
+      `${baseUrl}/collabrators/addcollabrator`,
       collaboratorData,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token },
       }
     );
     console.log("Add Collaborator Response:", response.data);
@@ -26,7 +26,7 @@ const addCollaborator = async (token, collaboratorData) => {
 export const signInCollaborator = async (collaboratorData) => {
   try {
     const response = await axios.post(
-      `http://localhost:4000/collabrators/signin`,
+      `https://crm-server-zeta.vercel.app/collabrators/signin`,
       collaboratorData
     );
     console.log("Sign In Collaborator Response:", response.data);
@@ -34,18 +34,18 @@ export const signInCollaborator = async (collaboratorData) => {
   } catch (error) {
     console.error(
       "Error signing in collaborator:",
-      error.response ? error.response.data : error.message
+       error.response ? error.response.data : error.message
     );
-    throw error;
+    return error.response ? error.response.data : error.message
   }
 };
 
-const getCollaborators = async (token) => {
+export const getCollaborators = async (token) => {
   try {
     const response = await axios.get(
-      `${baseUrl}/collaborators/getcollaborators`,
+      `https://crm-server-zeta.vercel.app/collabrators/getcollabrators`,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token },
       }
     );
     console.log("Get Collaborators Response:", response.data);
@@ -59,12 +59,12 @@ const getCollaborators = async (token) => {
   }
 };
 
-const deleteCollaborator = async (token, id) => {
+export const deleteCollaborator = async (token, id) => {
   try {
     const response = await axios.delete(
-      `${baseUrl}/collaborators/delete/${id}`,
+      `https://crm-server-zeta.vercel.app/collabrators/delete/${id}`,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token },
       }
     );
     console.log("Delete Collaborator Response:", response.data);
@@ -78,13 +78,13 @@ const deleteCollaborator = async (token, id) => {
   }
 };
 
-const updateCollaborator = async (token, id, collaboratorData) => {
+export const updateCollaborator = async (token, id, collaboratorData) => {
   try {
     const response = await axios.post(
-      `${baseUrl}/collaborators/update/${id}`,
+      `https://crm-server-zeta.vercel.app/collaborators/update/${id}`,
       collaboratorData,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: token },
       }
     );
     console.log("Update Collaborator Response:", response.data);

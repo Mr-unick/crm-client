@@ -1,13 +1,29 @@
 import React, { useState } from "react";
 import { Menu, X, Home, User, Briefcase, Inbox, Settings, Mail, UploadCloud, Users, BellDot } from "lucide-react";
+import { LoginContext } from "@/App";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
+ const navigate=useNavigate()
+
+let loggedinuser = localStorage.getItem("user");
+let user =JSON.parse(loggedinuser);
+let level =user?.level;
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const LogOut=()=>{
+    localStorage.removeItem('user');
+    localStorage.removeItem("isadmin");
+    navigate('/')
+    toast.success("Logged Out")
+    
+  }
 
   const navItems = [
     { icon: <Home size={20} />, label: "Dashboard", link: "/dash" },
@@ -59,24 +75,50 @@ const Sidebar = () => {
               </button>
             </div>
           </div>
-          <nav >
-            <ul className="space-y-2 z-50">
-              {navItems.map((item, index) => (
-                <li key={index} className="z-50">
+          <nav>
+            {localStorage.getItem("isadmin") ? (
+              <ul className="space-y-2 z-50">
+                {navItems.map((item, index) => (
+                  <li key={index} className="z-50">
+                    <a
+                      href={item.link}
+                      className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
+                    >
+                      <span className="mr-3">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <ul className="space-y-2 z-50">
+                <li className="z-50">
                   <a
-                    href={item.link}
+                    href={"/dash"}
                     className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
                   >
-                    <span className="mr-3">{item.icon}</span>
-                    <span>{item.label}</span>
+                    <span className="mr-3">
+                      <Home size={20} />
+                    </span>
+                    <span>Dashboard</span>
                   </a>
                 </li>
-              ))}
-            </ul>
+              </ul>
+            )}
           </nav>
         </div>
-        <div className="px-6 py-4">
-          <button className="bg-gray-700 text-white py-1 px-4 rounded-md hover:bg-gray-600 transition duration-200 w-full">
+        <div className="px-4 py-4">
+          <div className="my-5">
+            <p className="text-gray-200 font-bold">{user?.name}</p>
+            <p className="text-gray-200 ">
+              {level.charAt(0).toUpperCase() + level.slice(1)}
+            </p>
+            <p className="text-gray-300 text-sm">{user?.email}</p>
+          </div>
+          <button
+            onClick={LogOut}
+            className="bg-gray-700 text-white py-1 px-4 rounded-md hover:bg-gray-600 transition duration-200 w-full"
+          >
             Logout
           </button>
         </div>

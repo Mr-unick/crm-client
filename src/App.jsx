@@ -13,45 +13,52 @@ import CollabratorTable from "@/components/collabratorTable";
 import UploadLeads from "@/components/uploadLeads";
 import { LoginPage } from "@/pages/loginPage";
 import NewLeadsTable from "./components/newLeads";
-import { createContext, useEffect, useState } from "react";
-import NotionComponent from "./testpage";
-
-
-
+import { createContext, useEffect, useRef, useState } from "react";
+import UnauthorizedUser from "./pages/unauthrised";
+import PageNotFound from "./pages/pagenotfound";
+import { AdminLoginPage } from "./pages/adminLoginPage";
+import { AdminRoutes } from "./pages/adminProtected";
+import { Protected } from "./pages/ProtectedRoute";
 
 export const LoginContext = createContext();
 
 function App() {
-  
-// const [isauth, setauth] = useState(localStorage.getItem("user") !== null);
-const [isauth, setauth] = useState(true);
+  const [isauth, setauth] = useState(localStorage.getItem("user") !== null);
+  const [user, setUser] = useState({});
+ 
+  useEffect(() => {
+    let loggedinuser = localStorage.getItem("user");
 
-useEffect(()=>{
-let loggedinuser=localStorage.getItem('user');
-if(loggedinuser !== null || undefined){
-setauth(true)
-}
-},[isauth])
-
-
-console.log(isauth);
-  const Protected = () => {
+    if (loggedinuser !== null || undefined) {
+      setUser(JSON.parse(loggedinuser));
     
-    return isauth ? <Dashboard /> : <Navigate to={"/"} />;
-  };
+     if(user?.level === "admin"){
+        localStorage.setItem("isadmin", true);
+    
+     } 
+    }
+  }, []);
+
+  
+
+
 
   return (
-    <LoginContext.Provider value={setauth}>
+    <LoginContext.Provider value={(setauth)}>
       <BrowserRouter>
         <Routes>
-          <Route path="/dash" Component={Protected}>
-            <Route path="" Component={Leads} />
-            <Route path="collabrators" Component={CollabratorTable} />
-            <Route path="uploadleads" Component={UploadLeads} />
-            <Route path="newleads" Component={NewLeadsTable} />
+          <Route path="/dash" element={<Protected isauth={isauth} />}>
+            <Route path="" element={<Leads />} />
+            <Route path="" element={<AdminRoutes />}>
+              <Route path="collabrators" element={<CollabratorTable />} />{" "}
+              <Route path="uploadleads" element={<UploadLeads />} />
+              <Route path="newleads" element={<NewLeadsTable />} />
+            </Route>
           </Route>
-          <Route path="/" Component={LoginPage} />
-          {/* <Route path="/" Component={NotionComponent} /> */}
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/livin/admin" element={<AdminLoginPage />} />
+          <Route path="/unauthorised-user" element={<UnauthorizedUser />} />
+          <Route path="/*" element={<PageNotFound />} />
         </Routes>
       </BrowserRouter>
     </LoginContext.Provider>

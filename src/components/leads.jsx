@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { LeadTable } from './leadsTable';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -17,6 +17,7 @@ import { Button, Drawer } from '@mui/material';
 import LeadDetails from './leadsDetails';
 import { AllLeads } from './tabs/allleads';
 import { BoardLeads } from './tabs/boardLeads';
+import { getLeads } from '@/services/leadsApi';
 
 
 
@@ -25,21 +26,33 @@ import { BoardLeads } from './tabs/boardLeads';
 
 
 export const Leads = (props) => {
-    const [activeTab, setActiveTab] = useState("All Leads");
-    const [isOpen, setIsOpen] = useState(false);
-    const[lead,setlead]=useState(null);
 
-    const toggleDrawer = useCallback((lead) => {
+
+const [activeTab, setActiveTab] = useState("All Leads");
+const [isOpen, setIsOpen] = useState(false);
+const [leads, setlead] = useState([]);
+
+let loggedinuser = localStorage.getItem("user");
+let user = JSON.parse(loggedinuser);
+
+const toggleDrawer = useCallback((lead) => {
       setlead(lead);
       setIsOpen(false?true:false);
       console.log("ooo");
-     
     }
 ,[])
-  console.log(isOpen,'isopen');
+
+const getleads=async ()=>{
+
+let res=await getLeads(user?.token,user.level,user._id);
+setlead(res)
+}
+useEffect(()=>{
+getleads()
+},[])
+
   return (
     <div className=" lg:ml-5 mb-6  px-3   ">
-
       <Tabs defaultValue="all" className=" overflow-hidden mt-8 lg:mt-0">
         <TabsList className="lg:w-1/3 w-[100%]">
           <TabsTrigger value="all" className="w-1/3 ">
@@ -53,13 +66,13 @@ export const Leads = (props) => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="overflow-x-auto">
-          <AllLeads toggleDrawer={toggleDrawer} setlead={setlead} />
+          <AllLeads toggleDrawer={toggleDrawer} leads={leads} />
         </TabsContent>
         <TabsContent value="table" className="overflow-x-auto ">
-          <LeadTable />
+          <LeadTable leads={leads} />
         </TabsContent>
         <TabsContent value="board" className="overflow-x-auto">
-          <BoardLeads toggleDrawer={toggleDrawer} />
+          <BoardLeads toggleDrawer={toggleDrawer} leads={leads} />
         </TabsContent>
       </Tabs>
 

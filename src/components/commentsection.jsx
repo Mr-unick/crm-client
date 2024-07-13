@@ -1,13 +1,21 @@
-import { FileUpIcon, Image } from "lucide-react";
-import React, { useState } from "react";
+import { FileUpIcon, Image, Upload } from "lucide-react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import axios from "axios";
+import { addComment } from "@/services/leadsApi";
+import { toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
 
-
-const CommentSection = () => {
+const CommentSection = ({ lead }) => {
+  const [data, setdata] = useState({});
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const [pdf, setPdf] = useState(null);
+  const [submitted, setSubmitted] = useState(false); 
+  const[loader,setloader]=useState(false)
+
+  let loggedinuser = localStorage.getItem("user");
+  let user = JSON.parse(loggedinuser);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
@@ -15,29 +23,89 @@ const CommentSection = () => {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+   
     setImage(file);
-  
+    // const reader = new FileReader();
+
+    // reader.onloadend = () => {
+    //   setImage(reader.result);
+    // };
+
+    // if (file) {
+    //   reader.readAsDataURL(file);
+    // }
   };
 
   const handlePdfUpload = (e) => {
-    setPdf(e.target.files[0]);
-    
+    const file = e.target.files[0];
+    setPdf(file)
+    // const reader = new FileReader();
+
+    // reader.onloadend = () => {
+    //   setPdf(reader.result);
+    // };
+
+    // if (file) {
+    //   reader.readAsDataURL(file);
+    // }
   };
 
- 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setloader(true)
     e.preventDefault();
-    // Handle form submission here
-    console.log("Comment:", comment);
-    console.log("Image:", image);
-    console.log("PDF:", pdf);
-    // Reset form fields
-    setComment("");
-    setImage(null);
-    setImagePreview(null);
-    setPdf(null);
+    // setdata({
+    //   comment: comment,
+    //   imageUrl: image,
+    //   pdfUrl: pdf,
+    //   collaborator: { name: user.name, email: user.email, level: user.level },
+    // });
+
+    const formData = new FormData();
+    formData.append("comment", comment);
+    if (image) {
+      formData.append("image", image);
+    }
+    if (pdf) {
+      formData.append("pdf", pdf);
+    }
+
+    // Append collaborator object as JSON string
+    const collaborator = {
+      name: user.name,
+      email: user.email,
+      level: user.level,
+    };
+    formData.append("collaborator", JSON.stringify(collaborator));
+
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+     let res = await addComment(user.token, lead._id, formData);
+
+     if (res.status == 200) {
+      setloader(false)
+       toast.success(res.message);
+
+     } else {
+      setloader(false);
+       toast.error(res.message);
+     }
+
+    setSubmitted(true);
   };
+
+  
+
+  
+  useEffect(() => {
+    if (submitted) {
+      setComment("");
+      setImage(null);
+      setPdf(null);
+      setSubmitted(false); 
+    }
+  }, [data, submitted]);
 
   return (
     <div className="bg-gray-100 p-4 rounded-md">
@@ -55,11 +123,12 @@ const CommentSection = () => {
               onChange={handleImageUpload}
             />
             <span className="text-sm text-gray-500">
-              {image !== null ? image.name : " Upload an image (optional)"}
+              {image ? "Image selected" : "Upload an image (optional)"}
             </span>
           </div>
         </div>
-        <div className="flex items-center mb-4 ">
+       
+        <div className="flex items-center mb-4">
           <label htmlFor="pdf-upload" className="cursor-pointer mr-2">
             <FileUpIcon
               className="text-gray-500 hover:text-gray-700"
@@ -74,7 +143,7 @@ const CommentSection = () => {
             onChange={handlePdfUpload}
           />
           <span className="text-sm text-gray-500">
-            {pdf !== null ? pdf.name : " Upload A Pdf (optional)"}
+            {pdf ? "PDF selected" : "Upload a PDF (optional)"}
           </span>
         </div>
       </div>
@@ -89,7 +158,9 @@ const CommentSection = () => {
           ></textarea>
         </div>
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="w-32">
+          {loader ? <CircularProgress color="inherit" className="text-sm" size={25} /> : "Submit"}
+        </Button>
       </form>
     </div>
   );

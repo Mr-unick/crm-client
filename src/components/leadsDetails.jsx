@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Phone,
   MapPin,
-  Calendar,
+  Calendar as Calendericon,
   Check,
   Link,
   TrendingUp,
@@ -40,7 +40,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { LeadContext } from "@/comtextapi/leadcontext";
 
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "./ui/button";
+import { formatTimestamp } from "@/utils/datemethods";
 
 const steps = [
   {
@@ -117,48 +126,42 @@ const steps = [
 ];
 
 
-const leaddata = {
-  Name: "Ivy Brown",
-  Email: "ivyb@example.com",
-  Phone: "012-345-6789",
-  SecondPhone: "901-234-5678",
-  Address: "123 Willow St, Anystate, USA",
-  Status: "Inactive",
-  Priority: "Low",
-  Stage: "Qualified",
-  Collaborators: ["Henry White", "Jack Gray"],
-  BranchCode: "BR010",
-  Remainder: "Verify qualification criteria",
-  Source: "SEO",
-  DateTimeAdded: "2024-06-02T11:30:00Z",
-  Comments: [
-    {
-      Comment: "Passed initial qualification.",
-      User: "Henry White",
-      "Date Time": "2024-06-02T11:35:00Z",
-    },
-  ],
-};
+
+
 
 
 const LeadDeatilsTable = ({ lead, edit }) => {
 
+const[date ,setDate]=useState(new Date())
+   const stageColors = {
+     prospect: "text-gray-500",
+     opportunity: "text-blue-500",
+     qualified: "text-green-500",
+     nurture: "text-orange-500",
+     reprospect: "text-purple-500",
+   };
+
+   const priorityColors = {
+     high: "text-red-500",
+     medium: "text-yellow-500",
+     low: "text-green-500",
+   };
   return (
-    <div className="  w-[60%] mb-10">
-      <div className="grid grid-cols-2 gap-4 text-sm w-64 lg:w-full ">
+    <div className="w-full mb-10">
+      <div className="grid grid-cols-2 gap-4 text-sm lg:w-full text-[12px] lg:text-[15px]">
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Mail size={18} /> Email
         </div>
-        <div>
+        <div className="w-full">
           {edit ? (
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Email}
+              defaultValue={lead.email}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Email
+            lead.email
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -169,11 +172,11 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Phone}
+              defaultValue={lead.phone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Phone
+            lead.phone
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -184,27 +187,26 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.SecondPhone}
+              defaultValue={lead.secondphone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.SecondPhone
+            lead.secondphone || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <MapPinned size={18} />
-          Address
+          <MapPinned size={18} /> Address
         </div>
         <div>
           {edit ? (
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Address}
+              defaultValue={lead.address}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Address
+            lead.address || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -215,29 +217,28 @@ const LeadDeatilsTable = ({ lead, edit }) => {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.Status}
+              defaultValue={lead.status}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.Status
+            lead.status || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <ShieldCheck size={18} />
-          Priority
+          <ShieldCheck size={18} /> Priority
         </div>
         <div>
           {edit ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.Priority}
+              defaultValue={lead.priority}
             >
-              <option value="high">high</option>
-              <option value="high">low</option>
-              <option value="high">Medium</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
             </select>
           ) : (
-            lead.Priority
+            lead.priority
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -247,38 +248,69 @@ const LeadDeatilsTable = ({ lead, edit }) => {
           {edit ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.Stage}
+              defaultValue={lead.stage}
             >
-              <option value="high">Prospect</option>
-              <option value="high">Opportunity</option>
-              <option value="high">Qualified</option>
-              <option value="high">Nurture</option>
-              <option value="high">Reprospect</option>
+              <option value="prospect">Prospect</option>
+              <option value="opportunity">Opportunity</option>
+              <option value="qualified">Qualified</option>
+              <option value="nurture">Nurture</option>
+              <option value="reprospect">Reprospect</option>
             </select>
           ) : (
-            lead.Stage
+            lead.stage || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Collaborators
         </div>
-        <div>{lead.Collaborators.join(", ")}</div>
+        <div>
+          {lead.collaborators?.map((collabrator) => {
+            return <p>{collabrator.name}</p>;
+          })}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
         </div>
-        <div>{lead.BranchCode}</div>
+        <div>{lead.branchCode}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <BellRing size={18} /> Remainder
         </div>
-        <div>{lead.Remainder}</div>
+        <div>
+          {edit ? (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={`w-[280px] justify-start text-left font-normal ${
+                    !date && "text-muted-foreground"
+                  }`}
+                >
+                  <Calendericon className="mr-2 h-4 w-4" />
+                  <span>Pick a date</span>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                {/* <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                /> */}
+                <h1>hello</h1>
+              </PopoverContent>
+            </Popover>
+          ) : (
+            lead.remainder || "none"
+          )}
+        </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CircleHelp size={18} /> Source
         </div>
-        <div>{lead.Source}</div>
+        <div>{lead.source}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CalendarClock size={18} /> Date Time Added
         </div>
-        <div>{lead.DateTimeAdded}</div>
+        <div>{formatTimestamp(lead.dateTimeAdded)}</div>
       </div>
     </div>
   );
@@ -286,10 +318,15 @@ const LeadDeatilsTable = ({ lead, edit }) => {
 
 
 
-const LeadDetails = ({lead}) => {
-  console.log(lead,"from comp");
+
+
+const LeadDetails = () => {
+
+  const { handleNext, handlePrev ,lead} =useContext(LeadContext);
   
   const[edit,setedit]=useState(false)
+
+  console.log(lead,"from drawer");
 
   const Usercon =()=>{
   return <div className="rounded-full bg-gray-300 p-1">
@@ -298,8 +335,8 @@ const LeadDetails = ({lead}) => {
 }
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md lg:px-10 ">
-      <div className="flex gap-2">
+    <div className=" p-4 px-8 rounded-lg lg:px-10  xl:w-[60rem] lg:w-[50rem]  md:w-[40rem] sm:w-[24rem] w-[21rem]">
+      <div className="flex gap-2 w-full">
         <button
           onClick={() => {
             setedit(true);
@@ -307,28 +344,20 @@ const LeadDetails = ({lead}) => {
         >
           <Pencil size={18} color="gray" />
         </button>
-        <button
-          onClick={() => {
-            setedit(true);
-          }}
-        >
+        <button onClick={handlePrev}>
           <CircleArrowLeft size={18} color="gray" />
         </button>
-        <button
-          onClick={() => {
-            setedit(true);
-          }}
-        >
+        <button onClick={handleNext}>
           <CircleArrowRight size={18} color="gray" />
         </button>
       </div>
-      <h2 className="text-2xl font-bold my-6">Ajay Gupta</h2>
+      <h2 className="text-2xl font-bold my-6">{lead?.name}</h2>
 
-      <LeadDeatilsTable lead={leaddata} edit={edit} />
+      <LeadDeatilsTable lead={lead} edit={edit} />
 
-      {edit && <CommentSection />}
+      {edit && <CommentSection lead={lead} />}
 
-      {steps.map((step, index) => (
+      {lead?.comments?.map((comment, index) => (
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
             <img
@@ -337,15 +366,15 @@ const LeadDetails = ({lead}) => {
               className="w-10 h-10 rounded-full"
             />
             <div className="ml-2">
-              <p className="text-gray-800 font-semibold">Username</p>
-              <p className="text-gray-600 text-sm">June 1, 2024 at 10:30 AM</p>
+              <p className="text-gray-800 font-semibold">
+                {comment?.collaborator?.name}
+              </p>
+              <p className="text-gray-600 text-sm">
+                {formatTimestamp(comment.dateTimeAdded)}
+              </p>
             </div>
           </div>
-          <p className="text-gray-700 mb-4">
-            This is a comment. It can be a multi-line comment with as much text
-            as needed. The comment section should be designed in a simple and
-            modern way, using Tailwind CSS for styling.
-          </p>
+          <p className="text-gray-700 mb-4">{comment.comment}</p>
 
           {/* {file && (
             <div className="bg-white p-4 rounded-lg shadow-md">

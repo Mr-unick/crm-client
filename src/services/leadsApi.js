@@ -1,14 +1,20 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:4000"; // Replace with your API base URL
+const baseUrl = "https://crm-server-zeta.vercel.app/"; // Replace with your API base URL
 
 // Leads API calls
-export const getLeads = async (token) => {
+export const getLeads = async (token,level,id) => {
+  let isadmin =false;
+
+  if(level == 'admin'){
+    isadmin = true;
+  }
+
+  console.log(isadmin,"from api ");
   try {
-    const response = await axios.get(`${baseUrl}/leads/allleads`, {
+    const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/allleads?isadmin=${isadmin}&id=${id}`, {
       headers: { Authorization: token },
     });
-    console.log("Get Leads Response:", response.data);
     return response.data;
   } catch (error) {
     console.error(
@@ -19,12 +25,13 @@ export const getLeads = async (token) => {
   }
 };
 
-const addLead = async (token, leadData) => {
+export const addLead = async (token, leadData) => {
+  console.log('leades fro api',leadData);
   try {
-    const response = await axios.post(`${baseUrl}/leads/addleads`, leadData, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await axios.post(`https://crm-server-zeta.vercel.app/leads/addleads`, leadData, {
+      headers: { Authorization: token },
     });
-    console.log("Add Lead Response:", response.data);
+
     return response.data;
   } catch (error) {
     console.error(
@@ -35,12 +42,34 @@ const addLead = async (token, leadData) => {
   }
 };
 
+export const addComment = async (token, id,data) => {
+ 
+  try {
+    const response = await axios.post(
+      `https://crm-server-zeta.vercel.app/leads/addcoment/666a89a8ae3fb2f739d875c0`,
+      data,
+      {
+        headers: { Authorization: token },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error adding comment:",
+      error.response ? error.response.data : error.message
+    );
+    throw error;
+  }
+};
+
+
 const deleteLead = async (token, id) => {
   try {
-    const response = await axios.delete(`${baseUrl}/leads/delete/${id}`, {
+    const response = await axios.delete(`https://crm-server-zeta.vercel.app/leads/delete/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("Delete Lead Response:", response.data);
+   
     return response.data;
   } catch (error) {
     console.error(
@@ -54,7 +83,7 @@ const deleteLead = async (token, id) => {
 const updateLead = async (token, id, leadData) => {
   try {
     const response = await axios.post(
-      `${baseUrl}/leads/update/${id}`,
+      `https://crm-server-zeta.vercel.app/leads/update/${id}`,
       leadData,
       {
         headers: { Authorization: `Bearer ${token}` },

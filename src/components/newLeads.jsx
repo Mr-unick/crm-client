@@ -1,7 +1,12 @@
-import { getLeads } from "@/services/leadsApi";
-import React, { useState } from "react";
+import { addLead, getLeads } from "@/services/leadsApi";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import Select from 'react-select';
 import { useToast } from "@/components/ui/use-toast";
+import { getCollaborators } from "@/services/collabratorApi";
+import { Button } from "./ui/button";
+import { LoginContext } from "@/App";
+import { toast } from "react-toastify";
+import { CircularProgress } from "@mui/material";
 
 
 const data = [
@@ -9,126 +14,128 @@ const data = [
     id: 1,
     name: "Alice Johnson",
     email: "alice.johnson@example.com",
-    level: "Junior",
+  
   },
   {
     id: 2,
     name: "Bob Smith",
     email: "bob.smith@example.com",
-    level: "Senior",
+  
   },
   {
     id: 3,
     name: "Charlie Brown",
     email: "charlie.brown@example.com",
-    level: "Mid",
+
   },
   {
     id: 4,
     name: "Daisy Lee",
     email: "daisy.lee@example.com",
-    level: "Junior",
+  
   },
   {
     id: 5,
     name: "Ethan Hawke",
     email: "ethan.hawke@example.com",
-    level: "Senior",
+  
   },
   {
     id: 6,
     name: "Fiona Apple",
     email: "fiona.apple@example.com",
-    level: "Mid",
+ 
   },
   {
     id: 7,
     name: "George Martin",
     email: "george.martin@example.com",
-    level: "Junior",
+   
   },
   {
     id: 8,
     name: "Hannah Baker",
     email: "hannah.baker@example.com",
-    level: "Senior",
+  
   },
   {
     id: 9,
     name: "Ivy Carter",
     email: "ivy.carter@example.com",
-    level: "Mid",
+ 
   },
   {
     id: 10,
     name: "Jack Daniels",
     email: "jack.daniels@example.com",
-    level: "Junior",
+ 
   },
   {
     id: 11,
     name: "Karen White",
     email: "karen.white@example.com",
-    level: "Senior",
+ 
   },
   {
     id: 12,
     name: "Leo King",
     email: "leo.king@example.com",
-    level: "Mid",
+
   },
   {
     id: 13,
     name: "Mia Wong",
     email: "mia.wong@example.com",
-    level: "Junior",
+
   },
   {
     id: 14,
     name: "Nathan Drake",
     email: "nathan.drake@example.com",
-    level: "Senior",
+
   },
   {
     id: 15,
     name: "Olivia Wilde",
     email: "olivia.wilde@example.com",
-    level: "Mid",
+  
   },
 ];
 
 
 
-const employees = [
-  { id: 1, name: 'Alice Johnson', email: 'alice.johnson@example.com', level: 'Junior' },
-  { id: 2, name: 'Bob Smith', email: 'bob.smith@example.com', level: 'Senior' },
-  // Add more employees as needed
-];
 
 const NewLeadsTable = () => {
+
+
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedCollabrators, setSelectedCollabrators] = useState([]);
   const [selectPriority, setSelectPriority] = useState(null);
   const [leads, setLeads] = useState(data);
-   const { toast } = useToast();
-
+  const [collabrators,setCollabrators] = useState([])
+  const[loader,setloader]=useState(false)
+  const[apply,setapply]=useState(false)
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const getLeadsData = async (token) => {
     const res = await getLeads(token);
-    console.log(res);
+  
   };
 
-  useState(()=>{
-  let user=JSON.parse(localStorage.getItem('user'));
+ const getcollabrators = async (token) => {
+   const res2 = await getCollaborators(token);
+   const updatedCollaborators = res2.map((collabrator) => ({
+     value: collabrator,
+     label: collabrator.name,
+   }));
+   setCollabrators(updatedCollaborators);
+ };
+  useEffect(()=>{
   getLeadsData(user.token)
-  })
+  getcollabrators(user.token);
+  },[])
 
-  const collabratorOptions = [
-    { value: 'alice', label: 'Alice Johnson' },
-    { value: 'bob', label: 'Bob Smith' },
-    { value: 'charlie', label: 'Charlie Brown' },
-    // Add more options as needed
-  ];
+  
 
   const priorityOptions = [
     { value: 'high', label: 'High' },
@@ -136,74 +143,115 @@ const NewLeadsTable = () => {
     { value: 'low', label: 'Low' },
   ];
 
-  const handleSelectRow = (employeeId) => {
-    setSelectedRows(prevSelectedRows =>
-      prevSelectedRows.includes(employeeId)
-        ? prevSelectedRows.filter(id => id !== employeeId)
-        : [...prevSelectedRows, employeeId]
+  const handleSelectRow = (employeeEmail) => {
+    setSelectedRows((prevSelectedRows) =>
+      prevSelectedRows.includes(employeeEmail)
+        ? prevSelectedRows.filter((email) => email !== employeeEmail)
+        : [...prevSelectedRows, employeeEmail]
     );
   };
 
   const handleSelectAllRows = () => {
-    setSelectedRows(selectedRows.length === leads.length ? [] : leads.map(employee => employee.id));
+    setSelectedRows(selectedRows.length === leads.length ? [] : leads.map(employee => employee.email));
   };
 
   const handleApplyCollabrators = () => {
-    if (selectedCollabrators.length && selectPriority) {
+   
+    if (selectedCollabrators.length || selectPriority) {
       const updatedEmployees = leads.map((employee) =>
-        selectedRows.includes(employee.id)
+        selectedRows.includes(employee.email)
           ? {
               ...employee,
-              collabrators: selectedCollabrators.map(
+              collaborators: selectedCollabrators.map(
                 (collabrator) => collabrator.value
               ),
-              priority: selectPriority.value
+              priority: selectPriority.value,
             }
           : employee
       );
 
       setLeads(updatedEmployees);
-      setSelectedRows([]);
-      setSelectedCollabrators([]);
-      setSelectPriority(null);
+      console.log(selectedRows);
+      
+ setapply(true);
     }
+    
+
   };
+
+  const UploadChangedLeads=async()=>{
+    const upadated = leads.filter(
+      (element) => !selectedRows.includes(element.email)
+    );
+
+    const upadated2 = leads.filter((element) =>
+      selectedRows.includes(element.email)
+    );
+ 
+    setloader(true)
+    let res = await addLead(user.token, upadated2);
+    if(res.status ==200){
+       setloader(false);
+       setLeads(upadated);
+       setSelectedRows([]);
+       setSelectedCollabrators([]);
+       setSelectPriority(null);
+      toast.success("Leads Assigned Successfully !")
+    }else{
+       setloader(false);
+      toast.error("something went erong !")
+    }
+
+     setapply(false);
+  }
+
+  useEffect(()=>{
+
+  },[selectedRows])
+
 
   return (
     <div className="overflow-x-auto ml-8">
-      <button
-        onClick={() => {
-          toast({
-            title: "Scheduled: Catch up",
-            description: "Friday, February 10, 2023 at 5:57 PM",
-          });
-        }}
-      >
-        Show Toast
-      </button>
-      <div className=" hidden mb-4 lg:flex mt-3">
-        <Select
-          isMulti
-          value={selectedCollabrators}
-          onChange={setSelectedCollabrators}
-          options={collabratorOptions}
-          className="w-1/3"
-          placeholder="Select Collaborators"
-        />
-        <Select
-          value={selectPriority}
-          onChange={setSelectPriority}
-          options={priorityOptions}
-          className="w-1/3 ml-4"
-          placeholder="Select Priority"
-        />
-        <button
-          onClick={handleApplyCollabrators}
-          className="ml-4 px-4 py-1 bg-black w-[20%] text-white rounded-md"
-        >
-          Apply Changes
-        </button>
-      </div>
+      <Suspense>
+        <div className=" hidden mb-4 lg:flex mt-3">
+          <Select
+            isMulti
+            value={selectedCollabrators}
+            onChange={setSelectedCollabrators}
+            options={collabrators}
+            className="w-1/3"
+            placeholder="Select Collaborators"
+          />
+          <Select
+            value={selectPriority}
+            onChange={setSelectPriority}
+            options={priorityOptions}
+            className="w-1/3 ml-4"
+            placeholder="Select Priority"
+          />
+          {selectedCollabrators.length > 0 &&
+            selectPriority &&
+            selectedRows.length > 0 && (
+              <>
+                {apply ? (
+                  <Button
+                    onClick={UploadChangedLeads}
+                    className="ml-4 px-4 py-1 bg-black w-[20%] text-white rounded-md"
+                  >
+                    {loader ? <CircularProgress /> : "Apply"}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleApplyCollabrators}
+                    className="ml-4 px-4 py-1 bg-black w-[20%] text-white rounded-md"
+                  >
+                    Preview
+                  </Button>
+                )}
+              </>
+            )}
+        </div>
+      </Suspense>
 
       <div className="flex lg:hidden  justify-center items-center  w-64  h-screen">
         Cant Acces From Mobile
@@ -226,13 +274,13 @@ const NewLeadsTable = () => {
                 Email
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Level
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Collaborators
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Priority
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Action
               </th>
             </tr>
           </thead>
@@ -242,8 +290,8 @@ const NewLeadsTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
                   <input
                     type="checkbox"
-                    checked={selectedRows.includes(employee.id)}
-                    onChange={() => handleSelectRow(employee.id)}
+                    checked={selectedRows.includes(employee.email)}
+                    onChange={() => handleSelectRow(employee.email)}
                   />
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
@@ -252,16 +300,19 @@ const NewLeadsTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
                   {employee.email}
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                  {employee.level}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                  {employee.collabrators
-                    ? employee.collabrators.join(", ")
-                    : "None"}
+                  {employee?.collaborators?.map((collabrator) => {
+                    return collabrator.name;
+                  }) || "None"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
                   {employee.priority || "None"}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  <Button variant="outline" size="sm">
+                    Remove
+                  </Button>
                 </td>
               </tr>
             ))}
