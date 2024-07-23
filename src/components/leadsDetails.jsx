@@ -324,7 +324,8 @@ const LeadDetails = () => {
 
   const { handleNext, handlePrev ,lead} =useContext(LeadContext);
   
-  const[edit,setedit]=useState(false)
+  const[edit,setedit]=useState(false);
+
 
   console.log(lead,"from drawer");
 
@@ -367,7 +368,10 @@ const LeadDetails = () => {
             />
             <div className="ml-2">
               <p className="text-gray-800 font-semibold">
-                {comment?.collaborator?.name}
+                {
+
+                JSON.parse(comment?.collaborator)?.name
+                }
               </p>
               <p className="text-gray-600 text-sm">
                 {formatTimestamp(comment.dateTimeAdded)}
