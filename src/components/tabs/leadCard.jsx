@@ -27,8 +27,8 @@ export const LeadCard = ({lead}) => {
     (lead.priority === "low" && "bg-green-400") ||
     (lead.priority === "medium" && "bg-yellow-400");
   return (
-    <>
-      <div className="rounded-md border border-gray-300 p-4 my-2 w-72 ">
+ 
+      <div className="rounded-md border border-gray-300 p-4 my-2 w-[350px]">
       
         <div className="flex items-center justify-between mb-2 ">
           <h3 className="text-lg font-semibold">{lead.name}</h3>
@@ -52,6 +52,6 @@ export const LeadCard = ({lead}) => {
           <MessageSquareText size={15} />5
         </div>
       </div>
-    </>
+
   );
 };

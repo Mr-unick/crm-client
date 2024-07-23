@@ -111,7 +111,7 @@ const NewLeadsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedCollabrators, setSelectedCollabrators] = useState([]);
   const [selectPriority, setSelectPriority] = useState(null);
-  const [leads, setLeads] = useState(data);
+  const [leads, setLeads] = useState([]);
   const [collabrators,setCollabrators] = useState([])
   const[loader,setloader]=useState(false)
   const[apply,setapply]=useState(false)
@@ -133,9 +133,14 @@ const NewLeadsTable = () => {
   useEffect(()=>{
   getLeadsData(user.token)
   getcollabrators(user.token);
+
+  let newleads=JSON.parse(localStorage.getItem('newleads'))
+if(newleads){
+  setLeads(newleads);
+}
+  
   },[])
 
-  
 
   const priorityOptions = [
     { value: 'high', label: 'High' },
@@ -180,6 +185,7 @@ const NewLeadsTable = () => {
   };
 
   const UploadChangedLeads=async()=>{
+
     const upadated = leads.filter(
       (element) => !selectedRows.includes(element.email)
     );
@@ -188,9 +194,12 @@ const NewLeadsTable = () => {
       selectedRows.includes(element.email)
     );
  
-    setloader(true)
+    // setloader(true)
+
     let res = await addLead(user.token, upadated2);
-    if(res.status ==200){
+
+    
+    if(res.status == 200){
        setloader(false);
        setLeads(upadated);
        setSelectedRows([]);
@@ -211,9 +220,11 @@ const NewLeadsTable = () => {
 
 
   return (
-    <div className="overflow-x-auto ml-8">
-      <Suspense>
-        <div className=" hidden mb-4 lg:flex mt-3">
+    <div className="overflow-x-auto ml-8 flex justify-center items-center flex-col">
+
+      {
+        leads.length >0 ? <> <Suspense>
+        <div className=" hidden mb-4 lg:flex mt-3 w-full">
           <Select
             isMulti
             value={selectedCollabrators}
@@ -257,7 +268,8 @@ const NewLeadsTable = () => {
         Cant Acces From Mobile
       </div>
       <div className="lg:flex justify-center items-center hidden ">
-        <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md w-[70rem] mb-5">
+       
+          <table className="min-w-full divide-y divide-gray-200 border-[1px] rounded-md w-[70rem] mb-5">
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -317,8 +329,17 @@ const NewLeadsTable = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table> 
+        
+       
+      </div></> : 
+      <div className=" w-screen  flex justify-center items-center bg-red-300 flex-col">
+        No New Leads 
+
+        <button>Upload Leads</button>
       </div>
+      }
+     
     </div>
   );
 };

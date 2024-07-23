@@ -3,6 +3,7 @@ import { LeadCard } from "./leadCard";
 import DeatilsDrawer from "../Drawer";
 import { notifySuccess } from "../toasts/toast";
 import { toast } from "react-toastify";
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { LeadContext } from "@/comtextapi/leadcontext";
 import SortComponent from "../sort";
@@ -82,7 +83,7 @@ export const AllLeads = ({ leads }) => {
     <LeadContext.Provider
       value={{ handleNext, handlePrev, lead: currentLeads[currentLeadIndex] }}
     >
-      <div className="lg:flex justify-start hidden">
+      <div className="lg:flex justify-start hidden ">
         <SortComponent data={leads} onSortedData={handleSortedData} />
         <FilterComponent
           data={sortedData}
@@ -96,8 +97,7 @@ export const AllLeads = ({ leads }) => {
           className="w-1/2"
         />
 
-      <div className="w-screen grid grid-cols-3 gap-2 overflow-x-auto  ">
-        
+      <div className="w-full grid grid-cols-3 gap-2">
         <div className="py-2">
           <div className="pb-2">
             <span className="px-3 p-1 bg-gray-700 font-semibold text-white text-primary text-sm my-4 rounded-sm">
@@ -105,7 +105,7 @@ export const AllLeads = ({ leads }) => {
             </span>
           </div>
 
-          <div className="flex flex-col">
+          <ScrollArea  className="flex flex-col h-[30rem] ">
             {branchCode10Leads.length > 0 ? (
               <>
                 {branchCode10Leads.map((lead, index) => {
@@ -122,13 +122,13 @@ export const AllLeads = ({ leads }) => {
                 })}
               </>
             ) : (
-              <div className="rounded-md  border-gray-300 p-4 my-2 w-72 ">
+              <div className="rounded-md  border-gray-300 p-4 my-2 w-full text-center  ">
                 <p>No Data Available</p>
               </div>
             )}
-          </div>
+          </ScrollArea>
         </div>
-        <div className="py-2">
+        <div  className="py-2">
           <div className="pb-2">
             <span className="px-3 p-1 bg-gray-700 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Branch 2
@@ -139,7 +139,7 @@ export const AllLeads = ({ leads }) => {
             setopen={setopen}
             lead={currentLeads[currentLeadIndex]}
           />
-          <div className="flex flex-col">
+          <ScrollArea  className="flex flex-col h-screen  ">
             {branchCode11Leads.length > 0 ? (
               <>
                 {branchCode11Leads.map((lead, index) => {
@@ -156,9 +156,11 @@ export const AllLeads = ({ leads }) => {
                 })}
               </>
             ) : (
+              <div className="rounded-md  border-gray-300 p-4 my-2 text-center ">
               <p>No Data Available</p>
+            </div>
             )}
-          </div>
+          </ScrollArea>
         </div>
         <div className="py-2">
           <div className="pb-2">
@@ -171,7 +173,7 @@ export const AllLeads = ({ leads }) => {
             setopen={setopen}
             lead={currentLeads[currentLeadIndex]}
           />
-          <div className="flex flex-col">
+          <ScrollArea  className="flex flex-col h-screen  ">
             {branchCode12Leads.length > 0 ? (
               <>
                 {branchCode12Leads.map((lead, index) => {
@@ -188,9 +190,11 @@ export const AllLeads = ({ leads }) => {
                 })}
               </>
             ) : (
-              <p>No Data Available</p>
+              <div className="text-center w-full">
+                <p>No Data Available</p>
+              </div>
             )}
-          </div>
+          </ScrollArea>
         </div>
       </div>
     </LeadContext.Provider>

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Upload } from "lucide-react";
 import * as XLSX from "xlsx";
+import { useNavigate } from "react-router-dom";
 
 const UploadLeads = () => {
+
   const [file, setFile] = useState(null);
   const [jsonData, setJsonData] = useState(null);
+  const navigate=useNavigate();
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -30,7 +33,12 @@ const UploadLeads = () => {
 
   const handleUpload = () => {
     // Handle further upload logic here, like sending the JSON data to the server
-    console.log("Uploading JSON data:", jsonData);
+
+    let newleads=JSON.stringify(jsonData)
+    localStorage.setItem('newleads',newleads);
+    navigate('/dash/newleads')
+
+    
   };
 
   return (
@@ -69,11 +77,7 @@ const UploadLeads = () => {
         >
           Upload
         </button>
-        {jsonData && (
-          <div className="mt-4 text-sm text-gray-600">
-            <pre>{JSON.stringify(jsonData, null, 2)}</pre>
-          </div>
-        )}
+        
       </div>
     </div>
   );

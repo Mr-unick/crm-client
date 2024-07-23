@@ -52,7 +52,7 @@ getleads()
 },[])
 
   return (
-    <div className=" lg:ml-5 mb-6  px-3   ">
+    <div className=" lg:ml-5 mb-6  px-3  h-screen ">
       <Tabs defaultValue="all" className=" overflow-hidden mt-8 lg:mt-0">
         <TabsList className="lg:w-1/3 w-[100%]">
           <TabsTrigger value="all" className="w-1/3 ">

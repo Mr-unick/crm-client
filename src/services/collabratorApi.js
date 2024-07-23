@@ -6,7 +6,7 @@ const baseUrl = "https://crm-server-zeta.vercel.app/";
 export const addCollaborator = async (token, collaboratorData) => {
   try {
     const response = await axios.post(
-      `${baseUrl}/collabrators/addcollabrator`,
+      `https://crm-server-zeta.vercel.app/collabrators/addcollabrator`,
       collaboratorData,
       {
         headers: { Authorization: token },
