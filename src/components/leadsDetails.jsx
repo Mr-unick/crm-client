@@ -51,7 +51,7 @@ import {
 import { Button } from "./ui/button";
 import { formatTimestamp } from "@/utils/datemethods";
 import { updateLead } from "@/services/leadsApi";
-
+import { toast } from "react-toastify";
 
 
 
@@ -62,11 +62,12 @@ const LeadDeatilsTable = ({ lead, edit }) => {
 
 const[date ,setDate]=useState(new Date())
 const[updateleadData,setupdatelead]=useState({});
+const[loder,setLoder]=useState(false);
 
 let loggedinuser = localStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
-   const stageColors = {
+const stageColors = {
      prospect: "text-gray-500",
      opportunity: "text-blue-500",
      qualified: "text-green-500",
@@ -98,7 +99,7 @@ let user = JSON.parse(loggedinuser);
     }
   };
 
-   const priorityColors =(lead)=>{
+  const priorityColors =(lead)=>{
     return(
      ( lead ==="high" && "text-red-500")||
      ( lead ==="medium" && "text-yellow-500")||
@@ -112,11 +113,18 @@ let user = JSON.parse(loggedinuser);
       ...prevData,
       [name]: value,
     }));
-  };
+    };
 
   const saveChanges=async()=>{
 
-    await updateLead(user?.token,lead._id,updateleadData)
+    setLoder(true)
+
+    const res=await updateLead(user?.token,lead._id,updateleadData)
+    if(res.status==200){
+      toast.success("Changes Saved")
+    }
+
+    setLoder(false)
 
   }
   
@@ -302,7 +310,11 @@ let user = JSON.parse(loggedinuser);
         <div>{formatTimestamp(lead.dateTimeAdded)}</div>
       </div>
       {
-        edit && <button onClick={saveChanges} className="px-3 py-1 mt-8 rounded-md bg-black text-white">Save Changes</button>
+        edit && <button onClick={saveChanges} className="px-3 py-1 mt-8 rounded-md bg-black text-white">
+          {
+            loder ? "Loading..." : "Save Changes"
+        }
+        </button>
   
       }
         </div>
