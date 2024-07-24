@@ -50,80 +50,8 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "./ui/button";
 import { formatTimestamp } from "@/utils/datemethods";
+import { updateLead } from "@/services/leadsApi";
 
-const steps = [
-  {
-    label: "Select campaign settings",
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: "Create an ad group",
-    description:
-      "An ad group contains one or more ads which target a shared set of keywords.",
-  },
-  {
-    label: "Create an ad",
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-  {
-    label: "Select campaign settings",
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: "Create an ad group",
-    description:
-      "An ad group contains one or more ads which target a shared set of keywords.",
-  },
-  {
-    label: "Create an ad",
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-  {
-    label: "Select campaign settings",
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: "Create an ad group",
-    description:
-      "An ad group contains one or more ads which target a shared set of keywords.",
-  },
-  {
-    label: "Create an ad",
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-  {
-    label: "Select campaign settings",
-    description: `For each ad campaign that you create, you can control how much
-              you're willing to spend on clicks and conversions, which networks
-              and geographical locations you want your ads to show on, and more.`,
-  },
-  {
-    label: "Create an ad group",
-    description: `An ad group contains one or more ads which target a shared set of keywords.`,
-  },
-  {
-    label: "Create an ad",
-    description: `Try out different ad text to see what brings in the most customers,
-              and learn how to enhance your ads using features like ad extensions.
-              If you run into any problems with your ads, find out how to tell if
-              they're running and how to resolve approval issues.`,
-  },
-];
 
 
 
@@ -133,6 +61,11 @@ const steps = [
 const LeadDeatilsTable = ({ lead, edit }) => {
 
 const[date ,setDate]=useState(new Date())
+const[updateleadData,setupdatelead]=useState({});
+
+let loggedinuser = localStorage.getItem("user");
+let user = JSON.parse(loggedinuser);
+
    const stageColors = {
      prospect: "text-gray-500",
      opportunity: "text-blue-500",
@@ -141,11 +74,53 @@ const[date ,setDate]=useState(new Date())
      reprospect: "text-purple-500",
    };
 
-   const priorityColors = {
-     high: "text-red-500",
-     medium: "text-yellow-500",
-     low: "text-green-500",
+   const Prioritycolor = (lead) => {
+    return (
+      (lead.priority === "high" && "bg-red-300") ||
+      (lead.priority === "low" && "bg-green-300") ||
+      (lead.priority === "medium" && "bg-yellow-300")
+    );
+  };
+
+  const Activecolor = (lead) => {
+    return lead.status === "active" ? "text-blue-600" : "text-red-600";
+  };
+
+  const Stagecolor = (lead) => {
+    {
+      return (
+        (lead.stage === "prospect" && "bg-green-400") ||
+        (lead.stage === "opportunity" && "bg-blue-400") ||
+        (lead.stage === "qualified" && "bg-orange-400") ||
+        (lead.stage === "nurture" && "bg-purple-400") ||
+        (lead.stage === "reprospect" && "bg-yellow-400")
+      );
+    }
+  };
+
+   const priorityColors =(lead)=>{
+    return(
+     ( lead ==="high" && "text-red-500")||
+     ( lead ==="medium" && "text-yellow-500")||
+     ( lead ==="low" && "text-green-500")
+    )
    };
+
+   const handleupdate = async (e) => {
+    const { name, value } = e.target;
+    setupdatelead((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const saveChanges=async()=>{
+
+    await updateLead(user?.token,lead._id,updateleadData)
+
+  }
+  
+
   return (
     <div className="w-full mb-10">
       <div className="grid grid-cols-2 gap-4 text-sm lg:w-full text-[12px] lg:text-[15px]">
@@ -158,6 +133,8 @@ const[date ,setDate]=useState(new Date())
               type="text"
               readOnly={false}
               defaultValue={lead.email}
+              onChange={handleupdate}
+              name="email"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
@@ -172,6 +149,8 @@ const[date ,setDate]=useState(new Date())
             <input
               type="text"
               readOnly={false}
+              onChange={handleupdate}
+              name="phone"
               defaultValue={lead.phone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
@@ -188,6 +167,8 @@ const[date ,setDate]=useState(new Date())
               type="text"
               readOnly={false}
               defaultValue={lead.secondphone}
+               onChange={handleupdate}
+              name="secondaryNumber"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
@@ -202,6 +183,8 @@ const[date ,setDate]=useState(new Date())
             <input
               type="text"
               readOnly={false}
+               onChange={handleupdate}
+              name="address"
               defaultValue={lead.address}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
@@ -212,12 +195,14 @@ const[date ,setDate]=useState(new Date())
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pause size={18} /> Status
         </div>
-        <div>
+        <div className={Activecolor( lead.status)}>
           {edit ? (
             <input
               type="text"
               readOnly={false}
               defaultValue={lead.status}
+               onChange={handleupdate}
+              name="status"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
@@ -227,11 +212,13 @@ const[date ,setDate]=useState(new Date())
         <div className="font-semibold flex justify-start gap-2 items-center">
           <ShieldCheck size={18} /> Priority
         </div>
-        <div>
+        <div className={priorityColors( lead.priority)}>
           {edit ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
               defaultValue={lead.priority}
+               onChange={handleupdate}
+              name="priority"
             >
               <option value="high">High</option>
               <option value="medium">Medium</option>
@@ -241,7 +228,7 @@ const[date ,setDate]=useState(new Date())
             lead.priority
           )}
         </div>
-        <div className="font-semibold flex justify-start gap-2 items-center">
+        <div className={`font-semibold flex justify-start gap-2 items-center`+ Stagecolor(lead.stage )}>
           <Route size={18} /> Stage
         </div>
         <div>
@@ -249,6 +236,8 @@ const[date ,setDate]=useState(new Date())
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
               defaultValue={lead.stage}
+               onChange={handleupdate}
+              name="stage"
             >
               <option value="prospect">Prospect</option>
               <option value="opportunity">Opportunity</option>
@@ -263,9 +252,9 @@ const[date ,setDate]=useState(new Date())
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Collaborators
         </div>
-        <div>
+        <div className="flex gap-5">
           {lead.collaborators?.map((collabrator) => {
-            return <p>{collabrator.name}</p>;
+            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white">@{collabrator.name}</p>;
           })}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -312,7 +301,11 @@ const[date ,setDate]=useState(new Date())
         </div>
         <div>{formatTimestamp(lead.dateTimeAdded)}</div>
       </div>
-    </div>
+      {
+        edit && <button onClick={saveChanges} className="px-3 py-1 mt-8 rounded-md bg-black text-white">Save Changes</button>
+  
+      }
+        </div>
   );
 };
 
@@ -327,7 +320,7 @@ const LeadDetails = () => {
   const[edit,setedit]=useState(false);
 
 
-  console.log(lead,"from drawer");
+
 
   const Usercon =()=>{
   return <div className="rounded-full bg-gray-300 p-1">
@@ -340,7 +333,7 @@ const LeadDetails = () => {
       <div className="flex gap-2 w-full">
         <button
           onClick={() => {
-            setedit(true);
+            setedit(edit?false:true);
           }}
         >
           <Pencil size={18} color="gray" />
