@@ -80,13 +80,13 @@ const deleteLead = async (token, id) => {
   }
 };
 
-const updateLead = async (token, id, leadData) => {
+export const updateLead = async (token, id, leadData) => {
   try {
     const response = await axios.post(
       `https://crm-server-zeta.vercel.app/leads/update/${id}`,
       leadData,
       {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `${token}` },
       }
     );
     console.log("Update Lead Response:", response.data);
