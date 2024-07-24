@@ -75,6 +75,7 @@ const CommentSection = ({ lead }) => {
       email: user.email,
       level: user.level,
     };
+    
     formData.append("collaborator", JSON.stringify(collaborator));
 
     for (let pair of formData.entries()) {
