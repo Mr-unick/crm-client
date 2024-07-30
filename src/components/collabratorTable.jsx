@@ -39,7 +39,7 @@ const CollabratorTable = () => {
 
   const getCollabratorList = async () => {
        let res = await getCollaborators(userdetails?.token);
-       console.log(res);
+ 
        setCollabratorList(res);
      };
 
@@ -83,7 +83,7 @@ toast.error("Something Went Wrong");
     }
    
   }
-
+console.log(CollabratorData);
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"));
     setuserdetails(user);
@@ -163,6 +163,41 @@ toast.error("Something Went Wrong");
                 </SelectContent>
               </Select>
             </div>
+            <div className="mt-2 w-full">
+              <Select
+                onValueChange={(value) =>
+                  setCollabratorData((prevState) => ({
+                    ...prevState,
+                    branch: value,
+                  }))
+                }
+                className="mt-2"
+              >
+                <SelectTrigger className="border border-gray-300">
+                  <SelectValue placeholder="Select Branch" />
+                </SelectTrigger>
+                <SelectContent className="bg-white placeholder:text-gray-400 ">
+                  <SelectItem
+                    value="branch1"
+                    className="hover:bg-slate-400"
+                  >
+                  B1
+                  </SelectItem>
+                  <SelectItem
+                    value="branch2"
+                    className="hover:bg-slate-400"
+                  >
+                    B2
+                  </SelectItem>
+                  <SelectItem
+                   value="branch3"
+                    className="hover:bg-slate-400"
+                  >
+                   B3
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
             <div>
               <div className="flex items-center justify-between"></div>
               <div className="mt-2">
@@ -235,6 +270,12 @@ toast.error("Something Went Wrong");
                   scope="col"
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
+                Branch
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
                   Actions
                 </th>
               </tr>
@@ -250,6 +291,9 @@ toast.error("Something Went Wrong");
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
                     {employee.level}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                    {employee.branch}
                   </td>
                   <td className="px-6 lg:py-4 py-2 whitespace-nowrap  text-sm font-medium text-start gap-4">
                     {/* <Button

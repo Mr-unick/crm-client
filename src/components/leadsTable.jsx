@@ -2,7 +2,7 @@ import React from "react";
 import { Edit, Trash2 } from "lucide-react";
 import { leadsData } from "@/const";
 import { formatTimestamp } from "@/utils/datemethods";
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 export const LeadTable = ({ leads }) => {
@@ -44,7 +44,9 @@ export const LeadTable = ({ leads }) => {
     `#${((id & 0x00ffffff) | 0x1000000).toString(16).slice(1).toUpperCase()}`;
 
   return (
-    <div className="flex flex-col w-full bg-red-300 my-5 ">
+    <div className="flex flex-col w-full bg-red-300 my-5 overflow-auto ">
+      <ScrollArea  className="h-screen pb-10">
+
       <table className="min-w-full divide-y  border-[1px] pr-20 bg-red-700">
         <thead className="bg-gray-50">
           <tr>
@@ -169,6 +171,7 @@ export const LeadTable = ({ leads }) => {
           ))}
         </tbody>
       </table>
+      </ScrollArea>
     </div>
   );
 };

@@ -266,6 +266,12 @@ const stageColors = {
           })}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
+          <Users size={18} /> HeadCollaborator
+        </div>
+        <div className="flex gap-5">
+        <p className="rounded-md bg-green-500 px-3 py-1 text-white">@{lead?.Headcollaborator?.name}</p>;
+        </div>
+        <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
         </div>
         <div>{lead.branchCode}</div>
@@ -332,6 +338,7 @@ const LeadDetails = () => {
   const[edit,setedit]=useState(false);
 
 
+  const getRandomColor = () => `#${Math.floor(Math.random()*16777215).toString(16)}`;
 
 
   const Usercon =()=>{
@@ -366,11 +373,8 @@ const LeadDetails = () => {
       {lead?.comments?.map((comment, index) => (
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
-            <img
-              src="https://via.placeholder.com/40"
-              alt="User Avatar"
-              className="w-10 h-10 rounded-full"
-            />
+            <span  className="w-10 h-10 rounded-full text-center bg-blue-700 text-white flex justify-center items-center text-xl">{
+              JSON.parse(comment?.collaborator)?.name.charAt(0).toUpperCase()}</span>
             <div className="ml-2">
               <p className="text-gray-800 font-semibold">
                 {

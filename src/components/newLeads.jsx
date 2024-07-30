@@ -111,6 +111,7 @@ const NewLeadsTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectedCollabrators, setSelectedCollabrators] = useState([]);
   const [selectPriority, setSelectPriority] = useState(null);
+  const [selectBranch, setselectBranch] = useState(null);
   const [leads, setLeads] = useState([]);
   const [collabrators,setCollabrators] = useState([])
   const[loader,setloader]=useState(false)
@@ -147,6 +148,11 @@ if(newleads){
     { value: 'medium', label: 'Medium' },
     { value: 'low', label: 'Low' },
   ];
+  const BranchOptions = [
+    { value: 'branch1', label: 'Branch1' },
+    { value: 'branch2', label: 'Branch2' },
+    { value: 'branch3', label: 'Branch3' },
+  ];
 
   const handleSelectRow = (employeeEmail) => {
     setSelectedRows((prevSelectedRows) =>
@@ -171,6 +177,7 @@ if(newleads){
                 (collabrator) => collabrator.value
               ),
               priority: selectPriority.value,
+              branch:selectBranch.value
             }
           : employee
       );
@@ -240,6 +247,13 @@ if(newleads){
             className="w-1/3 ml-4"
             placeholder="Select Priority"
           />
+          <Select
+            value={selectBranch}
+            onChange={setselectBranch}
+            options={BranchOptions}
+            className="w-1/3 ml-4"
+            placeholder="Select Branch"
+          />
           {selectedCollabrators.length > 0 &&
             selectPriority &&
             selectedRows.length > 0 && (
@@ -289,8 +303,12 @@ if(newleads){
                 Collaborators
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Branch
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Priority
               </th>
+
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Action
               </th>
@@ -318,6 +336,10 @@ if(newleads){
                     return collabrator.name;
                   }) || "None"}
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
+                  {employee.branch || "None"}
+                </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
                   {employee.priority || "None"}
                 </td>

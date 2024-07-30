@@ -8,7 +8,7 @@ import { BoardCard } from "./boardCard";
 import { LeadContext } from "@/comtextapi/leadcontext";
 import SortComponent from "../sort";
 import FilterComponent from "../filter";
-
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 
 export const BoardLeads = ({ leads }) => {
@@ -80,14 +80,14 @@ export const BoardLeads = ({ leads }) => {
       value={{ handleNext, handlePrev, lead: currentLeads[currentLeadIndex] }}
     >
       <div className="lg:flex justify-start hidden">
-        <SortComponent data={leadsData} onSortedData={handleSortedData} />
+        <SortComponent data={leads} onSortedData={handleSortedData} />
         <FilterComponent
           data={sortedData}
           onFilteredData={handleFilteredData}
         />
       </div>
-      <div className="w-screen flex flex-row gap-4 overflow-x-auto">
-        <div className="py-2">
+      <div className="w-screen flex flex-row gap-4 overflow-x-auto ">
+        <div className="py-2  grid grid-cols-1 w-1/5">
           <div className="pb-2">
             <span className="px-3 p-1 bg-green-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Prospect {Prospect.length}
@@ -98,7 +98,8 @@ export const BoardLeads = ({ leads }) => {
             setopen={setopen}
             lead={currentLeads[currentLeadIndex]}
           />
-          <div className="flex flex-col">
+          {/* <div className="flex flex-col overflow-y-auto bg-red-200"> */}
+            <ScrollArea className="grid grid-cols-1 h-[32rem] ">
             {Prospect.map((lead, index) => {
               return (
                 <button
@@ -109,7 +110,8 @@ export const BoardLeads = ({ leads }) => {
                 </button>
               );
             })}
-          </div>
+            </ScrollArea>
+          {/* </div> */}
         </div>
         <div className="py-2">
           <div className="pb-2">

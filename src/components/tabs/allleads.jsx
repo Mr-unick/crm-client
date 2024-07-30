@@ -26,7 +26,7 @@ export const AllLeads = ({ leads }) => {
   const [sortedData, setSortedData] = useState(leads);
   const [filteredData, setFilteredData] = useState(leads);
 
-  console.log(leads);
+
 
   const handleDrawer = (lead, index, leads) => {
     setCurrentLeadIndex(index);
