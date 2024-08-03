@@ -51,7 +51,7 @@ const CommentSection = ({ lead }) => {
   };
 
   const handleSubmit = async (e) => {
-    setloader(true)
+    // setloader(true)
     e.preventDefault();
     // setdata({
     //   comment: comment,

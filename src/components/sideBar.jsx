@@ -15,7 +15,9 @@ let user =JSON.parse(loggedinuser);
 let level =user?.level;
 
   const toggleSidebar = () => {
+
     setIsOpen(!isOpen);
+    
   };
 
   const LogOut=()=>{

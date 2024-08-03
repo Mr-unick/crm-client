@@ -149,8 +149,10 @@ setloader(true)
         <div className="flex lg:hidden">
           <img src="./login.jpg" />
         </div>
-        <div className="flex items-center justify-center px-4 py-0 sm:px-6 sm:py-16 lg:px-8 lg:py-24 -mt-20  lg:mt-0">
+        <div className="flex items-center justify-center px-4 py-0 sm:px-6 sm:py-16 lg:px-8 lg:py-24 -mt-20  lg:mt-0 bg-gray-100">
           <div className="xl:mx-auto xl:w-full xl:max-w-sm 2xl:max-w-md  w-[90%]">
+            <div className="flex justify-start items-start w-1/2 -mt-12"><img src="logo1.png" alt="logo" /></div>
+            <h2 className="font-normal text-gray-500 text-2xl my-5">Log in to your Account</h2>
             <form action="#" method="POST" className="mt-8">
               <div className="space-y-5">
                 <div>

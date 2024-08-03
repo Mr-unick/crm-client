@@ -46,8 +46,9 @@ export function AdminLoginPage() {
   };
 
   return (
-    <section className="flex justify-center items-center w-screen h-screen flex-col">
-      <h1>Admin SignIn</h1>
+    <section className="flex justify-center items-center w-screen h-screen flex-col bg-gray-200">
+       <div className="flex justify-start items-start w-1/2 -mt-12">
+       <img src="logo1.png" alt="logo" /></div>
       <div className="w-[30%] ">
         <form action="#" method="POST" className="mt-8">
           <div className="space-y-5">

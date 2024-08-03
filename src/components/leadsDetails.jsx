@@ -42,19 +42,19 @@ import {
 } from "@/components/ui/select";
 import { LeadContext } from "@/comtextapi/leadcontext";
 
-import { Calendar } from "@/components/ui/calendar";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "./ui/button";
+import { Calendar } from "@/components/ui/calendar"
+
 import { formatTimestamp } from "@/utils/datemethods";
 import { updateLead } from "@/services/leadsApi";
 import { toast } from "react-toastify";
-
-
-
+import { Button } from "./ui/button";
+import { DatePickerDemo } from "./datepicker";
 
 
 
@@ -63,9 +63,12 @@ const LeadDeatilsTable = ({ lead, edit }) => {
 const[date ,setDate]=useState(new Date())
 const[updateleadData,setupdatelead]=useState({});
 const[loder,setLoder]=useState(false);
+const[remainder,Setremainder]=useState(null)
 
 let loggedinuser = localStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
+
+let level =user?.level;
 
 const stageColors = {
      prospect: "text-gray-500",
@@ -112,6 +115,7 @@ const stageColors = {
     setupdatelead((prevData) => ({
       ...prevData,
       [name]: value,
+      remainder:remainder !== null ? remainder : lead.remainder
     }));
     };
 
@@ -127,7 +131,12 @@ const stageColors = {
     setLoder(false)
 
   }
+
+  console.log(lead);
   
+  // (edit && (lead?.Headcollaborator?.email === user.email))
+
+
 
   return (
     <div className="w-full mb-10">
@@ -187,7 +196,7 @@ const stageColors = {
           <MapPinned size={18} /> Address
         </div>
         <div>
-          {edit ? (
+          {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <input
               type="text"
               readOnly={false}
@@ -204,7 +213,7 @@ const stageColors = {
           <Pause size={18} /> Status
         </div>
         <div className={Activecolor( lead.status)}>
-          {edit ? (
+          {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <input
               type="text"
               readOnly={false}
@@ -221,7 +230,7 @@ const stageColors = {
           <ShieldCheck size={18} /> Priority
         </div>
         <div className={priorityColors( lead.priority)}>
-          {edit ? (
+          {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
               defaultValue={lead.priority}
@@ -240,7 +249,7 @@ const stageColors = {
           <Route size={18} /> Stage
         </div>
         <div>
-          {edit ? (
+          {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
               defaultValue={lead.stage}
@@ -262,14 +271,14 @@ const stageColors = {
         </div>
         <div className="flex gap-5">
           {lead.collaborators?.map((collabrator) => {
-            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white">@{collabrator.name}</p>;
+            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator.name}</p>;
           })}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> HeadCollaborator
         </div>
         <div className="flex gap-5">
-        <p className="rounded-md bg-green-500 px-3 py-1 text-white">@{lead?.Headcollaborator?.name}</p>;
+        <p className="rounded-md bg-green-500 px-3 py-1 text-white text-xs font-semibold">@{lead?.Headcollaborator?.name}</p>
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
@@ -280,28 +289,7 @@ const stageColors = {
         </div>
         <div>
           {edit ? (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={`w-[280px] justify-start text-left font-normal ${
-                    !date && "text-muted-foreground"
-                  }`}
-                >
-                  <Calendericon className="mr-2 h-4 w-4" />
-                  <span>Pick a date</span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                {/* <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                /> */}
-                <h1>hello</h1>
-              </PopoverContent>
-            </Popover>
+            <DatePickerDemo Setremainder={Setremainder}/>
           ) : (
             lead.remainder || "none"
           )}

@@ -1,4 +1,4 @@
-import { addLead, getLeads } from "@/services/leadsApi";
+import { addLead, getLeads, updateLead } from "@/services/leadsApi";
 import React, { Suspense, useContext, useEffect, useState } from "react";
 import Select from 'react-select';
 import { useToast } from "@/components/ui/use-toast";
@@ -116,12 +116,15 @@ const NewLeadsTable = () => {
   const [collabrators,setCollabrators] = useState([])
   const[loader,setloader]=useState(false)
   const[apply,setapply]=useState(false)
+  const [ headCollab,setHeadCollab]=useState(selectedCollabrators?.filter(collabrator=> collabrator?.value?.level == 'Sales Professional'))
   const user = JSON.parse(localStorage.getItem("user"));
 
   const getLeadsData = async (token) => {
     const res = await getLeads(token);
   
   };
+
+  console.log('colllab',headCollab);
 
  const getcollabrators = async (token) => {
    const res2 = await getCollaborators(token);
@@ -142,6 +145,12 @@ if(newleads){
   
   },[])
 
+  useEffect(()=>{
+    let headData= selectedCollabrators?.filter(collabrator=> collabrator?.value?.level == 'Sales Professional')
+    setHeadCollab(headData[0]?.value)
+
+    },[selectedCollabrators])
+  
 
   const priorityOptions = [
     { value: 'high', label: 'High' },
@@ -149,10 +158,12 @@ if(newleads){
     { value: 'low', label: 'Low' },
   ];
   const BranchOptions = [
-    { value: 'branch1', label: 'Branch1' },
-    { value: 'branch2', label: 'Branch2' },
-    { value: 'branch3', label: 'Branch3' },
+    { value: 'LC32', label: 'LC32' },
+    { value: 'LC78', label: 'LC78' },
+    { value: 'LC71', label: 'LC78' },
   ];
+
+
 
   const handleSelectRow = (employeeEmail) => {
     setSelectedRows((prevSelectedRows) =>
@@ -167,6 +178,8 @@ if(newleads){
   };
 
   const handleApplyCollabrators = () => {
+
+    
    
     if (selectedCollabrators.length || selectPriority) {
       const updatedEmployees = leads.map((employee) =>
@@ -177,13 +190,14 @@ if(newleads){
                 (collabrator) => collabrator.value
               ),
               priority: selectPriority.value,
-              branch:selectBranch.value
+              branch:selectBranch.value,
+              Headcollaborator:headCollab
             }
           : employee
       );
 
+      console.log(updatedEmployees);
       setLeads(updatedEmployees);
-      console.log(selectedRows);
       
  setapply(true);
     }
@@ -201,7 +215,7 @@ if(newleads){
       selectedRows.includes(element.email)
     );
  
-    // setloader(true)
+    setloader(true)
 
     let res = await addLead(user.token, upadated2);
 
@@ -212,6 +226,7 @@ if(newleads){
        setSelectedRows([]);
        setSelectedCollabrators([]);
        setSelectPriority(null);
+       localStorage.removeItem('newleads');
       toast.success("Leads Assigned Successfully !")
     }else{
        setloader(false);
@@ -302,6 +317,7 @@ if(newleads){
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Collaborators
               </th>
+             
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Branch
               </th>
@@ -336,6 +352,7 @@ if(newleads){
                     return collabrator.name;
                   }) || "None"}
                 </td>
+              
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
                   {employee.branch || "None"}
                 </td>

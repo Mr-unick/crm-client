@@ -46,7 +46,7 @@ export const addComment = async (token, id,data) => {
  
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/leads/addcoment/${id}`,
+      `http://localhost:4000/leads/addcoment/${id}`,
       data,
       {
         headers: { Authorization: token },
