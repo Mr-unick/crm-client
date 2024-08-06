@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Phone,
   MapPin,
@@ -55,6 +55,7 @@ import { updateLead } from "@/services/leadsApi";
 import { toast } from "react-toastify";
 import { Button } from "./ui/button";
 import { DatePickerDemo } from "./datepicker";
+import { getCollaborators } from "@/services/collabratorApi";
 
 
 
@@ -64,11 +65,26 @@ const[date ,setDate]=useState(new Date())
 const[updateleadData,setupdatelead]=useState({});
 const[loder,setLoder]=useState(false);
 const[remainder,Setremainder]=useState(null)
-
+const [collabrators,setCollabrators] = useState([])
 let loggedinuser = localStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
 let level =user?.level;
+
+const getcollabrators = async (token) => {
+  const res2 = await getCollaborators(token);
+  const updatedCollaborators = res2.map((collabrator) => ({
+    value: collabrator,
+    label: collabrator.name,
+  }));
+  setCollabrators(updatedCollaborators);
+};
+
+useEffect(()=>{
+getcollabrators(user?.token)
+
+
+},[edit])
 
 const stageColors = {
      prospect: "text-gray-500",
@@ -115,13 +131,19 @@ const stageColors = {
     setupdatelead((prevData) => ({
       ...prevData,
       [name]: value,
-      remainder:remainder !== null ? remainder : lead.remainder
+      remainder:remainder !== null ? remainder : lead.remainder,
+      
     }));
     };
 
+    console.log(JSON.stringify(updateleadData.collaborators));
+
   const saveChanges=async()=>{
 
-    setLoder(true)
+    // setLoder(true)
+
+    
+    
 
     const res=await updateLead(user?.token,lead._id,updateleadData)
     if(res.status==200){
@@ -132,7 +154,6 @@ const stageColors = {
 
   }
 
-  console.log(lead);
   
   // (edit && (lead?.Headcollaborator?.email === user.email))
 
@@ -214,14 +235,16 @@ const stageColors = {
         </div>
         <div className={Activecolor( lead.status)}>
           {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
-            <input
-              type="text"
-              readOnly={false}
-              defaultValue={lead.status}
-               onChange={handleupdate}
-              name="status"
-              className="border-[1px] outline-none px-1 py-1 w-full"
-            />
+            <select
+            className="border-[1px] outline-none px-1 py-1 w-full"
+            defaultValue={lead?.Headcollaborator?.name}
+             onChange={handleupdate}
+            name="HeadCollaborator"
+          >
+            <option value={'active'}>Active</option>
+            <option value={'inactive'}>Inactive</option>
+          </select>
+            
           ) : (
             lead.status || "none"
           )}
@@ -260,7 +283,9 @@ const stageColors = {
               <option value="opportunity">Opportunity</option>
               <option value="qualified">Qualified</option>
               <option value="nurture">Nurture</option>
-              <option value="reprospect">Reprospect</option>
+              <option value="re-prospect">Reprospect</option>
+              <option value="customer">Customer</option>
+              <option value="lost">Lost</option>
             </select>
           ) : (
             lead.stage || "none"
@@ -272,14 +297,65 @@ const stageColors = {
         <div className="flex gap-5">
           {lead.collaborators?.map((collabrator) => {
             return <p className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator.name}</p>;
-          })}
+          })} 
         </div>
+        {
+          (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" ))  && 
+          <div className="font-semibold flex justify-start gap-2 items-center">
+          <Users size={18} /> Add New Collaborator
+        </div>
+        }
+        {
+          (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" ))  && 
+          <div className="flex gap-5">
+
+          <select
+              className="border-[1px] outline-none px-1 py-1 w-full"
+              defaultValue={lead?.Headcollaborator?.name}
+               onChange={handleupdate}
+              name="collaborators"
+            >
+              <option value="">Select Collaborator</option>
+             {
+              collabrators.map((data)=>{
+              
+                 
+                return ( <option value={data.value}>{data?.label}</option>)
+              })
+             }
+              
+            </select>
+          </div>
+        }
+        
+       
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> HeadCollaborator
         </div>
         <div className="flex gap-5">
-        <p className="rounded-md bg-green-500 px-3 py-1 text-white text-xs font-semibold">@{lead?.Headcollaborator?.name}</p>
+          {
+            (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? 
+            <select
+            className="border-[1px] outline-none px-1 py-1 w-full"
+            defaultValue={lead?.Headcollaborator?.name}
+             onChange={handleupdate}
+            name="HeadCollaborator"
+          >
+           {
+            collabrators.map((data)=>{
+              
+              return ( <option value={data.value}>{data?.label}</option>)
+            })
+           }
+            
+          </select> :
+           <p className="rounded-md bg-green-500 px-3 py-1 text-white text-xs font-semibold">
+           @{lead?.Headcollaborator?.name}</p>
+       
+          }
         </div>
+        
+       
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
         </div>

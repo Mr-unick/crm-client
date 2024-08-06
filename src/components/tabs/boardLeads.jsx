@@ -72,7 +72,9 @@ export const BoardLeads = ({ leads }) => {
   const Qualified = filterByBranchCode(DataType, "qualified");
   const Opportunity = filterByBranchCode(DataType, "opportunity");
   const Nurture = filterByBranchCode(DataType, "nurture");
-  const ReProspect = filterByBranchCode(DataType, "reprospect");
+  const ReProspect = filterByBranchCode(DataType, "re-prospect");
+  const Customer = filterByBranchCode(DataType, "customer");
+  const lost = filterByBranchCode(DataType, "lost");
 
   console.log(ReProspect);
   return (
@@ -198,6 +200,54 @@ export const BoardLeads = ({ leads }) => {
           />
           <div className="flex flex-col">
             {ReProspect.map((lead, index) => {
+              return (
+                <button
+                  key={lead.id}
+                  onClick={() => handleDrawer(lead, index, ReProspect)}
+                >
+                  <BoardCard lead={lead} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="py-2">
+          <div className="pb-2">
+            <span className="px-3 p-1 bg-yellow-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
+              Customer {Customer.length}
+            </span>
+          </div>
+          <DeatilsDrawer
+            open={open}
+            setopen={setopen}
+            lead={currentLeads[currentLeadIndex]}
+          />
+          <div className="flex flex-col">
+            {Customer.map((lead, index) => {
+              return (
+                <button
+                  key={lead.id}
+                  onClick={() => handleDrawer(lead, index, ReProspect)}
+                >
+                  <BoardCard lead={lead} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div className="py-2">
+          <div className="pb-2">
+            <span className="px-3 p-1 bg-yellow-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
+              Lost {lost.length}
+            </span>
+          </div>
+          <DeatilsDrawer
+            open={open}
+            setopen={setopen}
+            lead={currentLeads[currentLeadIndex]}
+          />
+          <div className="flex flex-col">
+            {lost.map((lead, index) => {
               return (
                 <button
                   key={lead.id}

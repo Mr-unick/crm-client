@@ -160,7 +160,7 @@ if(newleads){
   const BranchOptions = [
     { value: 'LC32', label: 'LC32' },
     { value: 'LC78', label: 'LC78' },
-    { value: 'LC71', label: 'LC78' },
+    { value: 'LC71', label: 'LC71' },
   ];
 
 
@@ -190,7 +190,7 @@ if(newleads){
                 (collabrator) => collabrator.value
               ),
               priority: selectPriority.value,
-              branch:selectBranch.value,
+              branchCode:selectBranch.value,
               Headcollaborator:headCollab
             }
           : employee
