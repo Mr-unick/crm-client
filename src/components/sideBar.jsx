@@ -9,7 +9,7 @@ const Sidebar = () => {
 const [isOpen, setIsOpen] = useState(false);
  const navigate=useNavigate()
 
-let loggedinuser = localStorage.getItem("user");
+let loggedinuser = sessionStorage.getItem("user");
 
 let user =JSON.parse(loggedinuser);
 let level =user?.level;
@@ -21,8 +21,8 @@ let level =user?.level;
   };
 
   const LogOut=()=>{
-    localStorage.removeItem('user');
-    localStorage.removeItem("isadmin");
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem("isadmin");
     navigate('/')
     toast.success("Logged Out")
     

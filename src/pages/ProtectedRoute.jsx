@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 
 export const Protected = () => {
 
-    const [isAuth, setIsAuth] = useState(localStorage.getItem("user") !== null);
+    const [isAuth, setIsAuth] = useState(sessionStorage.getItem("user") !== null);
 
   
 

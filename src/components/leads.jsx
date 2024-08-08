@@ -32,7 +32,7 @@ const [activeTab, setActiveTab] = useState("All Leads");
 const [isOpen, setIsOpen] = useState(false);
 const [leads, setlead] = useState([]);
 
-let loggedinuser = localStorage.getItem("user");
+let loggedinuser = sessionStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
 const toggleDrawer = useCallback((lead) => {

@@ -66,7 +66,7 @@ const[updateleadData,setupdatelead]=useState({});
 const[loder,setLoder]=useState(false);
 const[remainder,Setremainder]=useState(null)
 const [collabrators,setCollabrators] = useState([])
-let loggedinuser = localStorage.getItem("user");
+let loggedinuser = sessionStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
 let level =user?.level;
@@ -136,7 +136,7 @@ const stageColors = {
     }));
     };
 
-    console.log(JSON.stringify(updateleadData.collaborators));
+    console.log(updateleadData);
 
   const saveChanges=async()=>{
 
@@ -311,16 +311,17 @@ const stageColors = {
 
           <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead?.Headcollaborator?.name}
+              
                onChange={handleupdate}
               name="collaborators"
             >
               <option value="">Select Collaborator</option>
              {
               collabrators.map((data)=>{
-              
-                 
-                return ( <option value={data.value}>{data?.label}</option>)
+                const { value} =data;
+                
+                
+                return ( <option value={value._id}>{data?.label}</option>)
               })
              }
               
@@ -337,14 +338,16 @@ const stageColors = {
             (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? 
             <select
             className="border-[1px] outline-none px-1 py-1 w-full"
-            defaultValue={lead?.Headcollaborator?.name}
+           
              onChange={handleupdate}
-            name="HeadCollaborator"
+            name="Headcollaborator"
           >
            {
             collabrators.map((data)=>{
+
+              const {value}=data;
               
-              return ( <option value={data.value}>{data?.label}</option>)
+              return ( <option value={value?._id}>{data?.label}</option>)
             })
            }
             
@@ -401,6 +404,7 @@ const LeadDetails = () => {
   
   const[edit,setedit]=useState(false);
 
+console.log(lead);
 
   const getRandomColor = () => `#${Math.floor(Math.random()*16777215).toString(16)}`;
 

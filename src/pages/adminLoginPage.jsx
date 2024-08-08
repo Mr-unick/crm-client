@@ -26,7 +26,7 @@ export function AdminLoginPage() {
     console.log(loginData);
     let res = await signInAdmin(loginData);
     if (res.status == 200) {
-      localStorage.setItem("user", JSON.stringify(res));
+      sessionStorage.setItem("user", JSON.stringify(res));
       navigate("/dash");
       toast.success("Logged In")
     }else{

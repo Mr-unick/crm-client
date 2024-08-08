@@ -6,7 +6,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 export const AdminRoutes = ({}) => {
 
-  let admin = JSON.parse(localStorage.getItem("user"));
+  let admin = JSON.parse(sessionStorage.getItem("user"));
 
 
   return admin.level==="admin" ? <Outlet /> : <Navigate to={"/unauthorised-user"} />; // Redirect to unauthorized route

@@ -117,7 +117,7 @@ const NewLeadsTable = () => {
   const[loader,setloader]=useState(false)
   const[apply,setapply]=useState(false)
   const [ headCollab,setHeadCollab]=useState(selectedCollabrators?.filter(collabrator=> collabrator?.value?.level == 'Sales Professional'))
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   const getLeadsData = async (token) => {
     const res = await getLeads(token);
@@ -138,7 +138,7 @@ const NewLeadsTable = () => {
   getLeadsData(user.token)
   getcollabrators(user.token);
 
-  let newleads=JSON.parse(localStorage.getItem('newleads'))
+  let newleads=JSON.parse(sessionStorage.getItem('newleads'))
 if(newleads){
   setLeads(newleads);
 }
@@ -226,7 +226,7 @@ if(newleads){
        setSelectedRows([]);
        setSelectedCollabrators([]);
        setSelectPriority(null);
-       localStorage.removeItem('newleads');
+       sessionStorage.removeItem('newleads');
       toast.success("Leads Assigned Successfully !")
     }else{
        setloader(false);

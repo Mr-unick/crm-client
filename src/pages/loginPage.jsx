@@ -28,7 +28,7 @@ export function LoginPage() {
 setloader(true)
    let res= await signInCollaborator(loginData);
    if(res.status==200){
-    localStorage.setItem('user',JSON.stringify(res));
+    sessionStorage.setItem('user',JSON.stringify(res));
     navigate('/dash')
      toast.success("Logged In");
      setloader(false)

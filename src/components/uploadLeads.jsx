@@ -35,7 +35,7 @@ const UploadLeads = () => {
     // Handle further upload logic here, like sending the JSON data to the server
 
     let newleads=JSON.stringify(jsonData)
-    localStorage.setItem('newleads',newleads);
+    sessionStorage.setItem('newleads',newleads);
     navigate('/dash/newleads')
 
     
