@@ -99,17 +99,17 @@ export const LeadTable = ({ leads }) => {
           {leads.map((lead) => (
             <tr key={lead.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 border-x-[1px]">
-                {lead.name}
+                {lead?.name}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.email}
+                {lead?.email}
               </td>
               <td
                 className={`px-6 py-4 whitespace-nowrap text-sm ${Activecolor(
                   lead
                 )} border-x-[1px]`}
               >
-                {lead.status}
+                {lead?.status}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
                 <span
@@ -117,7 +117,7 @@ export const LeadTable = ({ leads }) => {
                     lead
                   )} rounded-sm text-white`}
                 >
-                  {lead.priority}
+                  {lead?.priority}
                 </span>
               </td>
 
@@ -129,7 +129,7 @@ export const LeadTable = ({ leads }) => {
                     lead
                   )} text-white px-3 py-1 rounded-sm`}
                 >
-                  {lead.stage}
+                  {lead?.stage}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px] flex gap-2">
@@ -138,34 +138,34 @@ export const LeadTable = ({ leads }) => {
                     <span
                       className={`px-3  bg-blue-400 text-white rounded-sm py-1`}
                     >
-                      @{collaborator.name}
+                      @{collaborator?.name}
                     </span>
                   );
                 })}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.leadReminder}
+                {lead?.leadReminder}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.address}
+                {lead?.address}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.source}
+                {lead?.source}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.adSource || "-"}
+                {lead?.adSource || "-"}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.phone}
+                {lead?.phone}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.secondaryNumber}
+                {lead?.secondaryNumber}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {lead.branchCode}
+                {lead?.branchCode}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-x-[1px]">
-                {formatTimestamp(lead.dateTimeAdded)}
+                {formatTimestamp(lead?.dateTimeAdded)}
               </td>
             </tr>
           ))}

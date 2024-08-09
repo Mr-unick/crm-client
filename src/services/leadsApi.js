@@ -4,18 +4,25 @@ const baseUrl = "https://crm-server-zeta.vercel.app/"; // Replace with your API 
 
 // Leads API calls
 export const getLeads = async (token,level,id) => {
+
   let isadmin =false;
 
   if(level == 'admin'){
     isadmin = true;
   }
 
-  console.log(isadmin,"from api ");
   try {
-    const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/allleads?isadmin=${isadmin}&id=${id}`, {
-      headers: { Authorization: token },
-    });
-    return response.data;
+    if(isadmin){
+      const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/allleads?isadmin=${isadmin}&id=${id}`, {
+        headers: { Authorization: token },
+      });
+      return response.data;
+    }else{
+      const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/${id}`, {
+        headers: { Authorization: token },
+      });
+      return response.data;
+    }
   } catch (error) {
     console.error(
       "Error fetching leads:",
@@ -43,10 +50,11 @@ export const addLead = async (token, leadData) => {
 };
 
 export const addComment = async (token, id,data) => {
+  console.log('hello')
  
   try {
     const response = await axios.post(
-      `http://localhost:4000/leads/addcoment/${id}`,
+      `https://crm-server-zeta.vercel.app/leads/addcoment/${id}`,
       data,
       {
         headers: { Authorization: token },

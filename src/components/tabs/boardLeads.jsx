@@ -88,7 +88,8 @@ export const BoardLeads = ({ leads }) => {
           onFilteredData={handleFilteredData}
         />
       </div>
-      <div className="w-screen flex flex-row gap-4 overflow-x-auto ">
+      <ScrollArea className="h-screen mb-20 pb-32">
+      <div className="w-screen flex flex-row gap-4 overflow-auto h-full">
         <div className="py-2  grid grid-cols-1 w-1/5">
           <div className="pb-2">
             <span className="px-3 p-1 bg-green-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
@@ -101,7 +102,7 @@ export const BoardLeads = ({ leads }) => {
             lead={currentLeads[currentLeadIndex]}
           />
           {/* <div className="flex flex-col overflow-y-auto bg-red-200"> */}
-            <ScrollArea className="grid grid-cols-1 h-[32rem] ">
+            <div >
             {Prospect.map((lead, index) => {
               return (
                 <button
@@ -112,32 +113,8 @@ export const BoardLeads = ({ leads }) => {
                 </button>
               );
             })}
-            </ScrollArea>
+            </div>
           {/* </div> */}
-        </div>
-        <div className="py-2">
-          <div className="pb-2">
-            <span className="px-3 p-1 bg-blue-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
-              Opportunity {Opportunity.length}
-            </span>
-          </div>
-          <DeatilsDrawer
-            open={open}
-            setopen={setopen}
-            lead={currentLeads[currentLeadIndex]}
-          />
-          <div className="flex flex-col">
-            {Opportunity.map((lead, index) => {
-              return (
-                <button
-                  key={lead.id}
-                  onClick={() => handleDrawer(lead, index, Opportunity)}
-                >
-                  <BoardCard lead={lead} />
-                </button>
-              );
-            })}
-          </div>
         </div>
         <div className="py-2">
           <div className="pb-2">
@@ -163,6 +140,31 @@ export const BoardLeads = ({ leads }) => {
             })}
           </div>
         </div>
+        <div className="py-2">
+          <div className="pb-2">
+            <span className="px-3 p-1 bg-blue-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
+              Opportunity {Opportunity.length}
+            </span>
+          </div>
+          <DeatilsDrawer
+            open={open}
+            setopen={setopen}
+            lead={currentLeads[currentLeadIndex]}
+          />
+          <div className="flex flex-col">
+            {Opportunity.map((lead, index) => {
+              return (
+                <button
+                  key={lead.id}
+                  onClick={() => handleDrawer(lead, index, Opportunity)}
+                >
+                  <BoardCard lead={lead} />
+                </button>
+              );
+            })}
+          </div>
+        </div>
+       
         <div className="py-2">
           <div className="pb-2">
             <span className="px-3 p-1 bg-purple-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
@@ -260,6 +262,9 @@ export const BoardLeads = ({ leads }) => {
           </div>
         </div>
       </div>
+        </ScrollArea>
+
+      
     </LeadContext.Provider>
   );
 };

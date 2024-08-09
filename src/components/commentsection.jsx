@@ -14,7 +14,7 @@ const CommentSection = ({ lead }) => {
   const [submitted, setSubmitted] = useState(false); 
   const[loader,setloader]=useState(false)
 
-  let loggedinuser = localStorage.getItem("user");
+  let loggedinuser = sessionStorage.getItem("user");
   let user = JSON.parse(loggedinuser);
 
   const handleCommentChange = (e) => {
@@ -51,8 +51,9 @@ const CommentSection = ({ lead }) => {
   };
 
   const handleSubmit = async (e) => {
-    // setloader(true)
+    setloader(true)
     e.preventDefault();
+
     // setdata({
     //   comment: comment,
     //   imageUrl: image,
@@ -71,9 +72,9 @@ const CommentSection = ({ lead }) => {
 
     // Append collaborator object as JSON string
     const collaborator = {
-      name: user.name,
-      email: user.email,
-      level: user.level,
+      name: user?.name,
+      email: user?.email,
+      level: user?.level,
     };
     
     formData.append("collaborator", JSON.stringify(collaborator));
@@ -82,7 +83,7 @@ const CommentSection = ({ lead }) => {
       console.log(pair[0], pair[1]);
     }
 
-     let res = await addComment(user.token, lead._id, formData);
+     let res = await addComment(user?.token, lead?._id, formData);
 
      if (res.status == 200) {
       setloader(false)

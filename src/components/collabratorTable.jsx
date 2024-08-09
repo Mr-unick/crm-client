@@ -85,7 +85,7 @@ toast.error("Something Went Wrong");
   }
 console.log(CollabratorData);
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem("user"));
+    let user = JSON.parse(sessionStorage.getItem("user"));
     setuserdetails(user);
   }, []);
 

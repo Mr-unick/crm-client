@@ -140,7 +140,7 @@ const stageColors = {
 
   const saveChanges=async()=>{
 
-    // setLoder(true)
+    setLoder(true)
 
     
     
@@ -166,7 +166,7 @@ const stageColors = {
           <Mail size={18} /> Email
         </div>
         <div className="w-full">
-          {edit ? (
+          {(edit && level==="admin") ? (
             <input
               type="text"
               readOnly={false}
@@ -183,7 +183,7 @@ const stageColors = {
           <Phone size={18} /> Phone
         </div>
         <div>
-          {edit ? (
+          {(edit && level==="admin") ? (
             <input
               type="text"
               readOnly={false}
@@ -200,7 +200,7 @@ const stageColors = {
           <Phone size={18} /> Second Phone
         </div>
         <div>
-          {edit ? (
+          {(edit && level==="admin") ? (
             <input
               type="text"
               readOnly={false}
@@ -280,10 +280,11 @@ const stageColors = {
               name="stage"
             >
               <option value="prospect">Prospect</option>
-              <option value="opportunity">Opportunity</option>
               <option value="qualified">Qualified</option>
+              <option value="opportunity">Opportunity</option>
+              
               <option value="nurture">Nurture</option>
-              <option value="re-prospect">Reprospect</option>
+              <option value="re-prospect">Re-prospect</option>
               <option value="customer">Customer</option>
               <option value="lost">Lost</option>
             </select>
@@ -296,17 +297,17 @@ const stageColors = {
         </div>
         <div className="flex gap-5">
           {lead.collaborators?.map((collabrator) => {
-            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator.name}</p>;
+            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator?.name}</p>;
           })} 
         </div>
         {
-          (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" ))  && 
+          (edit &&( (lead?.Headcollaborator?.email === user?.email) || level==="admin" ))  && 
           <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Add New Collaborator
         </div>
         }
         {
-          (edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" ))  && 
+          (edit &&( (lead?.Headcollaborator?.email === user?.email) || level==="admin" ))  && 
           <div className="flex gap-5">
 
           <select
@@ -342,6 +343,7 @@ const stageColors = {
              onChange={handleupdate}
             name="Headcollaborator"
           >
+              <option value="">Select Headcollaborator</option>
            {
             collabrators.map((data)=>{
 
@@ -404,7 +406,7 @@ const LeadDetails = () => {
   
   const[edit,setedit]=useState(false);
 
-console.log(lead);
+console.log(lead,'this is lead data');
 
   const getRandomColor = () => `#${Math.floor(Math.random()*16777215).toString(16)}`;
 
@@ -442,7 +444,7 @@ console.log(lead);
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
             <span  className="w-10 h-10 rounded-full text-center bg-blue-700 text-white flex justify-center items-center text-xl">{
-              JSON.parse(comment?.collaborator)?.name.charAt(0).toUpperCase()}</span>
+              JSON.parse(comment?.collaborator)?.name?.charAt(0).toUpperCase()}</span>
             <div className="ml-2">
               <p className="text-gray-800 font-semibold">
                 {
