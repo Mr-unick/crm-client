@@ -44,7 +44,7 @@ const toggleDrawer = useCallback((lead) => {
 
 const getleads=async ()=>{
 
-let res=await getLeads(user?.token,user.level,user._id);
+let res=await getLeads(user?.token,user?.level,user?.id);
 setlead(res)
 }
 useEffect(()=>{
