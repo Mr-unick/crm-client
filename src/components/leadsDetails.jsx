@@ -131,7 +131,7 @@ const stageColors = {
     setupdatelead((prevData) => ({
       ...prevData,
       [name]: value,
-      remainder:remainder !== null ? remainder : lead.remainder,
+      leadReminder:remainder !== null ? remainder : lead.remainder,
       
     }));
     };
@@ -372,7 +372,7 @@ const stageColors = {
           {edit ? (
             <DatePickerDemo Setremainder={Setremainder}/>
           ) : (
-            lead.remainder || "none"
+            lead.leadReminder || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
