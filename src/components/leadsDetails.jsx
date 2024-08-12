@@ -370,7 +370,7 @@ const stageColors = {
             // <DatePickerDemo Setremainder={Setremainder} onChange={handleupdate}/>
             <input type="date" name="leadReminder" onChange={handleupdate} />
           ) : (
-            (lead.leadReminder).slice(0,10) || "none"
+            (lead.leadReminder)?.slice(0,10) || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
