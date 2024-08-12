@@ -62,10 +62,12 @@ import { getCollaborators } from "@/services/collabratorApi";
 const LeadDeatilsTable = ({ lead, edit }) => {
 
 const[date ,setDate]=useState(new Date())
+const[remainder,Setremainder]=useState(null)
 const[updateleadData,setupdatelead]=useState({});
 const[loder,setLoder]=useState(false);
-const[remainder,Setremainder]=useState(null)
+
 const [collabrators,setCollabrators] = useState([])
+
 let loggedinuser = sessionStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
@@ -131,8 +133,7 @@ const stageColors = {
     setupdatelead((prevData) => ({
       ...prevData,
       [name]: value,
-      leadReminder:remainder !== null ? remainder : lead.remainder,
-      
+    
     }));
     };
 
@@ -141,10 +142,6 @@ const stageColors = {
   const saveChanges=async()=>{
 
     setLoder(true)
-
-    
-    
-
     const res=await updateLead(user?.token,lead._id,updateleadData)
     if(res.status==200){
       toast.success("Changes Saved")
@@ -370,9 +367,10 @@ const stageColors = {
         </div>
         <div>
           {edit ? (
-            <DatePickerDemo Setremainder={Setremainder}/>
+            // <DatePickerDemo Setremainder={Setremainder} onChange={handleupdate}/>
+            <input type="date" name="leadReminder" onChange={handleupdate} />
           ) : (
-            lead.leadReminder || "none"
+            (lead.leadReminder).slice(0,10) || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
