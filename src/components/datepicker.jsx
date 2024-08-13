@@ -14,13 +14,14 @@ import {
 } from "@/components/ui/popover"
 import { useState } from "react"
 
-export function DatePickerDemo({Setremainder}) {
+export function DatePickerDemo({Setremainder,onChange}) {
 
   const [date, setDate] = useState(new Date())
 
   const [isCal,setIsCal]=useState(false);
 
   const handleSelect=(date)=>{
+
 setDate(date);
 setIsCal(false)
 Setremainder(date)
@@ -39,7 +40,7 @@ Setremainder(date)
           )}
           onClick={()=>{setIsCal(true)}}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <CalendarIcon  className="mr-2 h-4 w-4"  />
           {date ? format(date, "PPP") : <span>Set Remainder</span>}
         </Button>
         :
@@ -48,9 +49,12 @@ Setremainder(date)
           selected={date}
           onSelect={(selectedDate) => {
             handleSelect(selectedDate);
+            console.log(selectedDate,'date');
+            
           }}
+          onChange={onChange}
+          name="leadReminder"
           initialFocus
-          
           
         />
      }

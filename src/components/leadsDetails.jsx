@@ -190,7 +190,7 @@ const stageColors = {
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.phone
+             <a href={`https://wa.me/${lead.phone}`} target="_blank" rel="noopener noreferrer">{lead.phone}</a>
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">

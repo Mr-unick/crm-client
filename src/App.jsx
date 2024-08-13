@@ -19,6 +19,8 @@ import PageNotFound from "./pages/pagenotfound";
 import { AdminLoginPage } from "./pages/adminLoginPage";
 import { AdminRoutes } from "./pages/adminProtected";
 import { Protected } from "./pages/ProtectedRoute";
+import RemainderPage from "./pages/RemainderPage";
+
 
 export const LoginContext = createContext();
 
@@ -27,7 +29,7 @@ function App() {
   const [user, setUser] = useState({});
  
   useEffect(() => {
-    let loggedinuser = localStorage.getItem("user");
+    let loggedinuser = sessionStorage.getItem("user");
 
     if (loggedinuser !== null || undefined) {
       setUser(JSON.parse(loggedinuser));
@@ -47,12 +49,15 @@ function App() {
     <LoginContext.Provider value={(setauth)}>
       <BrowserRouter>
         <Routes>
+        <Route path="/remainders" element={<RemainderPage />} />
           <Route path="/dash" element={<Protected isauth={isauth} />}>
+         
             <Route path="" element={<Leads />} />
             <Route path="" element={<AdminRoutes />}>
               <Route path="collabrators" element={<CollabratorTable />} />{" "}
               <Route path="uploadleads" element={<UploadLeads />} />
               <Route path="newleads" element={<NewLeadsTable />} />
+            
             </Route>
           </Route>
           <Route path="/" element={<LoginPage />} />

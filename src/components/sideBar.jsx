@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, Home, User, Briefcase, Inbox, Settings, Mail, UploadCloud, Users, BellDot } from "lucide-react";
+import { Menu, X, Home, User, Briefcase, Inbox, Settings, Mail, UploadCloud, Users, BellDot, BellDotIcon } from "lucide-react";
 import { LoginContext } from "@/App";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,7 +10,6 @@ const [isOpen, setIsOpen] = useState(false);
  const navigate=useNavigate()
 
 let loggedinuser = sessionStorage.getItem("user");
-
 let user =JSON.parse(loggedinuser);
 let level =user?.level;
 
@@ -30,6 +29,7 @@ let level =user?.level;
 
   const navItems = [
     { icon: <Home size={20} />, label: "Dashboard", link: "/dash" },
+    { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainder" },
     {
       icon: <BellDot size={20} />,
       label: "New Leads",
@@ -104,6 +104,17 @@ let level =user?.level;
                       <Home size={20} />
                     </span>
                     <span>Dashboard</span>
+                  </a>
+                </li>
+                <li className="z-50">
+                  <a
+                    href={"/remainders"}
+                    className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
+                  >
+                    <span className="mr-3">
+                      <BellDotIcon size={20} />
+                    </span>
+                    <span>Remainders</span>
                   </a>
                 </li>
               </ul>
