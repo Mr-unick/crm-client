@@ -329,7 +329,7 @@ const stageColors = {
         
        
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <Users size={18} /> HeadCollaborator
+          <Users size={18} /> Head Collaborator
         </div>
         <div className="flex gap-5">
           {

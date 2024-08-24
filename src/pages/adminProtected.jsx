@@ -8,7 +8,6 @@ export const AdminRoutes = ({}) => {
 
   let admin = JSON.parse(sessionStorage.getItem("user"));
 
-
   return admin.level==="admin" ? <Outlet /> : <Navigate to={"/unauthorised-user"} />; // Redirect to unauthorized route
 };
 

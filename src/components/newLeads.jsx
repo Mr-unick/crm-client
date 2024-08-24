@@ -7,7 +7,15 @@ import { Button } from "./ui/button";
 import { LoginContext } from "@/App";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const data = [
   {
@@ -113,6 +121,7 @@ const NewLeadsTable = () => {
   const [selectPriority, setSelectPriority] = useState(null);
   const [selectBranch, setselectBranch] = useState(null);
   const [leads, setLeads] = useState([]);
+  const [onelead, setOneLead] = useState({});
   const [collabrators,setCollabrators] = useState([])
   const[loader,setloader]=useState(false)
   const[apply,setapply]=useState(false)
@@ -124,7 +133,7 @@ const NewLeadsTable = () => {
   
   };
 
-  console.log('colllab',headCollab);
+
 
  const getcollabrators = async (token) => {
    const res2 = await getCollaborators(token);
@@ -163,6 +172,13 @@ if(newleads){
     { value: 'LC71', label: 'LC71' },
   ];
 
+
+  const handlechange=(e)=>{
+    setOneLead((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+   }
 
 
   const handleSelectRow = (employeeEmail) => {
@@ -205,6 +221,20 @@ if(newleads){
 
   };
 
+  const handleOneSubmit=async()=>{
+    setloader(true)
+    let res = await addLead(user.token, onelead);
+    if(res.status == 200){
+  
+     toast.success("Lead added Successfully !")
+   }else{
+      setloader(false);
+     toast.error("something went erong !")
+   }
+
+    setloader(false)
+  }
+
   const UploadChangedLeads=async()=>{
 
     const upadated = leads.filter(
@@ -243,6 +273,8 @@ if(newleads){
 
   return (
     <div className="overflow-x-auto ml-8 flex justify-center items-center flex-col">
+
+
 
       {
         leads.length >0 ? <> <Suspense>
@@ -371,14 +403,31 @@ if(newleads){
         </table> 
         
        
-      </div></> : 
-      <div className=" w-screen  flex justify-center items-center bg-red-300 flex-col">
+      </div>
+      </> : 
+      <div className=" w-screen h-1/2  flex justify-center items-center  flex-col">
         No New Leads 
 
         <button>Upload Leads</button>
       </div>
       }
-     
+     <Dialog>
+        <DialogTrigger>
+          <Button varient="outline" className="mb-4">
+            Add Lead
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-white flex justify-center items-center flex-col w-[300px] lg:w-[40%]">
+         <div className=" p-8 flex flex-col justify-center items-center w-full">
+          <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="name" name="name" />
+          <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="email" name="email" />
+          <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="phone" name="phone"/>
+          
+          <button onClick={handleOneSubmit} className="rounded-md bg-gray-900 text-white font-sans px-3 py-1 text-center font-semibold my-4">Submit</button>
+
+         </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

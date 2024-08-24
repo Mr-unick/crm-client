@@ -45,7 +45,7 @@ export const LeadTable = ({ leads }) => {
 
   return (
     <div className="flex flex-col w-full bg-red-300 my-5 overflow-auto ">
-      <ScrollArea  className="h-screen pb-10">
+      <div  className="h-screen pb-10 w-full overflow-x-auto">
 
       <table className="min-w-full divide-y  border-[1px] pr-20 bg-red-700">
         <thead className="bg-gray-50">
@@ -171,7 +171,7 @@ export const LeadTable = ({ leads }) => {
           ))}
         </tbody>
       </table>
-      </ScrollArea>
+      </div>
     </div>
   );
 };

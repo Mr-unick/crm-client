@@ -88,9 +88,10 @@ export const BoardLeads = ({ leads }) => {
           onFilteredData={handleFilteredData}
         />
       </div>
-      <ScrollArea className="h-screen mb-20 pb-32">
-      <div className="w-screen flex flex-row gap-4 overflow-auto h-full">
-        <div className="py-2  grid grid-cols-1 w-1/5">
+    
+
+      <div className="w-full flex flex-row gap-4 overflow-auto h-full ">
+        <div className="py-2 ">
           <div className="pb-2">
             <span className="px-3 p-1 bg-green-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Prospect {Prospect.length}
@@ -262,7 +263,7 @@ export const BoardLeads = ({ leads }) => {
           </div>
         </div>
       </div>
-        </ScrollArea>
+      
 
       
     </LeadContext.Provider>

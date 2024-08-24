@@ -31,6 +31,8 @@ export const Leads = (props) => {
 const [activeTab, setActiveTab] = useState("All Leads");
 const [isOpen, setIsOpen] = useState(false);
 const [leads, setlead] = useState([]);
+const [search,setsearch]=useState(null);
+const [tab,setTab]=useState(false);
 
 let loggedinuser = sessionStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
@@ -49,29 +51,60 @@ setlead(res)
 }
 useEffect(()=>{
 getleads()
+setlead(leads); 
+setsearch(null)
 },[])
+
+useEffect(()=>{
+  getleads()
+  setlead(leads); 
+  setsearch(null)
+  },[tab])
+
+useEffect(() => {
+  if (search) {
+    const filteredData = leads.filter(item => 
+      item.name?.toLowerCase()?.includes(search.toLowerCase()) ||
+      item.number?.includes(search)
+    );
+    setlead(filteredData);
+  } else {
+    setlead(leads); 
+  }
+}, [search]);
+
+
 
   return (
     <div className=" lg:ml-5 mb-6  px-3  h-screen ">
       <Tabs defaultValue="all" className=" overflow-hidden mt-8 lg:mt-0">
         <TabsList className="lg:w-1/3 w-[100%]">
-          <TabsTrigger value="all" className="w-1/3 ">
+          <TabsTrigger onClick={()=>setTab(tab ? false:true)} value="all" className="w-1/3 ">
             All Leads
           </TabsTrigger>
-          <TabsTrigger value="table" className="w-1/3">
+          <TabsTrigger onClick={()=>setTab(tab ? false:true)} value="table" className="w-1/3">
             Table View
           </TabsTrigger>
-          <TabsTrigger value="board" className="w-1/3">
+          <TabsTrigger onClick={()=>setTab(tab ? false:true)} value="board" className="w-1/3">
             Board View
           </TabsTrigger>
         </TabsList>
         <TabsContent value="all" className="overflow-x-auto">
+        <div className="h-10 flex justify-start items-center ">
+       <input onChange={(e)=>{setsearch(e.target.value)}} type="text" placeholder="search..." className="border-[1px] border-gray-200 outline-none  px-2 w-1/2 py-1"/>
+       </div>
           <AllLeads toggleDrawer={toggleDrawer} leads={leads} />
         </TabsContent>
         <TabsContent value="table" className="overflow-x-auto ">
+        <div className="h-10 flex justify-start items-center ">
+       <input onChange={(e)=>{setsearch(e.target.value)}} type="text" placeholder="search..." className=" border-[1px] border-gray-200 outline-none w-1/2 px-2 py-1"/>
+       </div>
           <LeadTable leads={leads} />
         </TabsContent>
         <TabsContent value="board" className="overflow-x-auto">
+        <div className="h-10 flex justify-start items-center ">
+       <input onChange={(e)=>{setsearch(e.target.value)}} type="text" placeholder="search..." className=" border-[1px] border-gray-200 outline-none w-1/2 px-2 py-1"/>
+       </div>
           <BoardLeads toggleDrawer={toggleDrawer} leads={leads} />
         </TabsContent>
       </Tabs>

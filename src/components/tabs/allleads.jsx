@@ -25,6 +25,7 @@ export const AllLeads = ({ leads }) => {
   const [currentLeads, setCurrentLeads] = useState([]);
   const [sortedData, setSortedData] = useState(leads);
   const [filteredData, setFilteredData] = useState(leads);
+  const [search,setsearch]=useState(null);
 
 
 
