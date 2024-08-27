@@ -40,7 +40,7 @@ let user = JSON.parse(loggedinuser);
 const toggleDrawer = useCallback((lead) => {
       setlead(lead);
       setIsOpen(false?true:false);
-      console.log("ooo");
+    
     }
 ,[])
 
@@ -101,7 +101,7 @@ useEffect(() => {
        </div>
           <LeadTable leads={leads} />
         </TabsContent>
-        <TabsContent value="board" className="overflow-x-auto">
+        <TabsContent value="board" className="overflow-auto  ">
         <div className="h-10 flex justify-start items-center ">
        <input onChange={(e)=>{setsearch(e.target.value)}} type="text" placeholder="search..." className=" border-[1px] border-gray-200 outline-none w-1/2 px-2 py-1"/>
        </div>

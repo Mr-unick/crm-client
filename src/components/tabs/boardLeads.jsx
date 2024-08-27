@@ -24,6 +24,8 @@ export const BoardLeads = ({ leads }) => {
   const [filteredData, setFilteredData] = useState(null);
 
   const handleDrawer = (lead, index, leads) => {
+    console.log('this is index',index,leads);
+
     setCurrentLeadIndex(index);
     setCurrentLeads(leads);
     setopen(true);
@@ -76,7 +78,6 @@ export const BoardLeads = ({ leads }) => {
   const Customer = filterByBranchCode(DataType, "customer");
   const lost = filterByBranchCode(DataType, "lost");
 
-  console.log(ReProspect);
   return (
     <LeadContext.Provider
       value={{ handleNext, handlePrev, lead: currentLeads[currentLeadIndex] }}
@@ -90,9 +91,10 @@ export const BoardLeads = ({ leads }) => {
       </div>
     
 
-      <div className="w-full flex flex-row gap-4 overflow-auto h-full ">
-        <div className="py-2 ">
-          <div className="pb-2">
+      <div className="w-full flex flex-row gap-4 overflow-auto  h-[32rem] ">
+
+        <div className="py-2 overflow-y-auto">
+          <div className="pb-2 overflow-y-auto">
             <span className="px-3 p-1 bg-green-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Prospect {Prospect.length}
             </span>
@@ -103,7 +105,7 @@ export const BoardLeads = ({ leads }) => {
             lead={currentLeads[currentLeadIndex]}
           />
           {/* <div className="flex flex-col overflow-y-auto bg-red-200"> */}
-            <div >
+            <div  >
             {Prospect.map((lead, index) => {
               return (
                 <button
@@ -117,7 +119,7 @@ export const BoardLeads = ({ leads }) => {
             </div>
           {/* </div> */}
         </div>
-        <div className="py-2">
+        <div className="py-2  ">
           <div className="pb-2">
             <span className="px-3 p-1 bg-orange-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Qualified {Qualified.length}
@@ -128,7 +130,7 @@ export const BoardLeads = ({ leads }) => {
             setopen={setopen}
             lead={currentLeads[currentLeadIndex]}
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col overflow-auto bg">
             {Qualified.map((lead, index) => {
               return (
                 <button
@@ -230,7 +232,7 @@ export const BoardLeads = ({ leads }) => {
               return (
                 <button
                   key={lead.id}
-                  onClick={() => handleDrawer(lead, index, ReProspect)}
+                  onClick={() => handleDrawer(lead, index, Customer)}
                 >
                   <BoardCard lead={lead} />
                 </button>
@@ -249,12 +251,12 @@ export const BoardLeads = ({ leads }) => {
             setopen={setopen}
             lead={currentLeads[currentLeadIndex]}
           />
-          <div className="flex flex-col">
+          <div className="flex flex-col ">
             {lost.map((lead, index) => {
               return (
                 <button
                   key={lead.id}
-                  onClick={() => handleDrawer(lead, index, ReProspect)}
+                  onClick={() => handleDrawer(lead, index, lost)}
                 >
                   <BoardCard lead={lead} />
                 </button>

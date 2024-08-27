@@ -137,7 +137,7 @@ const stageColors = {
     }));
     };
 
-    console.log(updateleadData);
+  
 
   const saveChanges=async()=>{
 
@@ -363,7 +363,7 @@ const stageColors = {
         </div>
         <div>{lead.branchCode}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
-          <BellRing size={18} /> Remainder
+          <BellRing size={18} /> Reminder
         </div>
         <div>
           {edit ? (
@@ -404,7 +404,7 @@ const LeadDetails = () => {
   
   const[edit,setedit]=useState(false);
 
-console.log(lead,'this is lead data');
+
 
   const getRandomColor = () => `#${Math.floor(Math.random()*16777215).toString(16)}`;
 
