@@ -93,8 +93,8 @@ export const BoardLeads = ({ leads }) => {
 
       <div className="w-full flex flex-row gap-4 overflow-auto  h-[32rem] ">
 
-        <div className="py-2 overflow-y-auto">
-          <div className="pb-2 overflow-y-auto">
+        <div className="py-2 ">
+          <div className="pb-2 ">
             <span className="px-3 p-1 bg-green-400 font-semibold text-white text-primary text-sm my-4 rounded-sm">
               Prospect {Prospect.length}
             </span>
