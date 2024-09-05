@@ -143,6 +143,7 @@ const NewLeadsTable = () => {
    }));
    setCollabrators(updatedCollaborators);
  };
+
   useEffect(()=>{
   getLeadsData(user.token)
   getcollabrators(user.token);
@@ -153,6 +154,8 @@ if(newleads){
 }
   
   },[])
+
+
 
   useEffect(()=>{
     let headData= selectedCollabrators?.filter(collabrator=> collabrator?.value?.level == 'Sales Professional')
@@ -212,7 +215,6 @@ if(newleads){
           : employee
       );
 
-      console.log(updatedEmployees);
       setLeads(updatedEmployees);
       
  setapply(true);
@@ -269,6 +271,12 @@ if(newleads){
   useEffect(()=>{
 
   },[selectedRows])
+
+  const handleDelete = ( index) =>{ 
+    let newleads=leads.filter((_, i) => i !== index);
+
+    setLeads(newleads);
+  }
 
 
   return (
@@ -363,7 +371,7 @@ if(newleads){
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {leads.map((employee) => (
+            {leads.map((employee,index) => (
               <tr key={employee.id}>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-start">
                   <input
@@ -393,7 +401,7 @@ if(newleads){
                   {employee.priority || "None"}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-start">
-                  <Button variant="outline" size="sm">
+                  <Button onClick={()=>{handleDelete(index)}} variant="outline" size="sm">
                     Remove
                   </Button>
                 </td>
