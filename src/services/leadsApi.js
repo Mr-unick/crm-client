@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "https://crm-server-zeta.vercel.app/"; // Replace with your API base URL
+const baseUrl = "http://82.112.231.43:4000/"; // Replace with your API base URL
 
 // Leads API calls
 export const getLeads = async (token,level,id) => {
@@ -14,12 +14,12 @@ export const getLeads = async (token,level,id) => {
 
   try {
     if(isadmin){
-      const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/allleads?isadmin=${isadmin}&id=${id}`, {
+      const response = await axios.get(`http://82.112.231.43:4000/leads/allleads?isadmin=${isadmin}&id=${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
     }else{
-      const response = await axios.get(`https://crm-server-zeta.vercel.app/leads/${id}`, {
+      const response = await axios.get(`http://82.112.231.43:4000/leads/${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
@@ -43,12 +43,12 @@ export const getLeadsRemainder = async (token,level,id) => {
 
   try {
     if(isadmin){
-      const response = await axios.get(`http://crm-server-zeta.vercel.app/leads/remainderleads?isadmin=${isadmin}&id=${id}`, {
+      const response = await axios.get(`http://82.112.231.43:4000/leads/remainderleads?isadmin=${isadmin}&id=${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
     }else{
-      const response = await axios.get(`http://crm-server-zeta.vercel.app/leads/remainderleads/${id}`, {
+      const response = await axios.get(`http://82.112.231.43:4000/leads/remainderleads/${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
@@ -66,7 +66,7 @@ export const getLeadsRemainder = async (token,level,id) => {
 export const addLead = async (token, leadData) => {
   console.log('leades fro api',leadData);
   try {
-    const response = await axios.post(`https://crm-server-zeta.vercel.app/leads/addleads`, leadData, {
+    const response = await axios.post(`http://82.112.231.43:4000/leads/addleads`, leadData, {
       headers: { Authorization: token },
     });
 
@@ -81,11 +81,11 @@ export const addLead = async (token, leadData) => {
 };
 
 export const addComment = async (token, id,data) => {
-   console.log('hello',data,id)
+ 
  
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/leads/addcoment/${id}`,
+      `http://localhost:4000/leads/addcoment/${id}`,
       data,
       {
         headers: { Authorization: token },
@@ -105,7 +105,7 @@ export const addComment = async (token, id,data) => {
 
 const deleteLead = async (token, id) => {
   try {
-    const response = await axios.delete(`https://crm-server-zeta.vercel.app/leads/delete/${id}`, {
+    const response = await axios.delete(`http://82.112.231.43:4000/leads/delete/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
    
@@ -122,7 +122,7 @@ const deleteLead = async (token, id) => {
 export const updateLead = async (token, id, leadData) => {
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/leads/update/${id}`,
+      `http://82.112.231.43:4000/leads/update/${id}`,
       leadData,
       {
         headers: { Authorization: `${token}` },

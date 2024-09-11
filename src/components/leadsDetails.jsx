@@ -201,13 +201,13 @@ const stageColors = {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.secondphone}
+              defaultValue={lead.secondaryNumber}
                onChange={handleupdate}
               name="secondaryNumber"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.secondphone || "none"
+            lead.secondaryNumber || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
