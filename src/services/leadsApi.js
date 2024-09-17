@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = "http://82.112.231.43:4000/"; // Replace with your API base URL
+const baseUrl = "https://82.112.231.43:4000"; // Replace with your API base URL
 
 // Leads API calls
 export const getLeads = async (token,level,id) => {
@@ -14,7 +14,7 @@ export const getLeads = async (token,level,id) => {
 
   try {
     if(isadmin){
-      const response = await axios.get(`http://82.112.231.43:4000/leads/allleads?isadmin=${isadmin}&id=${id}`, {
+      const response = await axios.get(`https://82.112.231.43:4000/leads/allleads?isadmin=${isadmin}&id=${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
@@ -43,12 +43,12 @@ export const getLeadsRemainder = async (token,level,id) => {
 
   try {
     if(isadmin){
-      const response = await axios.get(`http://82.112.231.43:4000/leads/remainderleads?isadmin=${isadmin}&id=${id}`, {
+      const response = await axios.get(`https://82.112.231.43:4000/leads/remainderleads?isadmin=${isadmin}&id=${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
     }else{
-      const response = await axios.get(`http://82.112.231.43:4000/leads/remainderleads/${id}`, {
+      const response = await axios.get(`https://82.112.231.43:4000/leads/remainderleads/${id}`, {
         headers: { Authorization: token },
       });
       return response.data;
@@ -85,7 +85,7 @@ export const addComment = async (token, id,data) => {
  
   try {
     const response = await axios.post(
-      `http://82.112.231.43:4000/leads/addcoment/${id}`,
+      `https://82.112.231.43:4000/leads/addcoment/${id}`,
       data,
       {
         headers: { Authorization: token },
@@ -105,7 +105,7 @@ export const addComment = async (token, id,data) => {
 
 const deleteLead = async (token, id) => {
   try {
-    const response = await axios.delete(`http://82.112.231.43:4000/leads/delete/${id}`, {
+    const response = await axios.delete(`https://82.112.231.43:4000/leads/delete/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
    
@@ -122,7 +122,7 @@ const deleteLead = async (token, id) => {
 export const updateLead = async (token, id, leadData) => {
   try {
     const response = await axios.post(
-      `http://82.112.231.43:4000/leads/update/${id}`,
+      `https://82.112.231.43:4000/leads/update/${id}`,
       leadData,
       {
         headers: { Authorization: `${token}` },
