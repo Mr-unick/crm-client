@@ -3,7 +3,7 @@ import axios from "axios";
 export const signInAdmin = async (Admindata) => {
   try {
     const response = await axios.post(
-      `https://www.livincompany.co:4000/admin/signin`,
+      `https://localhost:4000/admin/signin`,
       Admindata
     );
 
