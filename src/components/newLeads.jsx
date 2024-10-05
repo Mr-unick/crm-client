@@ -430,7 +430,7 @@ if(newleads){
           <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="name" name="name" />
           <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="email" name="email" />
           <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="phone" name="phone"/>
-          <select onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" name="source" >
+          <select onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]"  name="source" >
             <option value="Client Referral">Client Referral</option>
             <option ="Walk In">Walk In</option>
           </select>
