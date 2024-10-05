@@ -431,7 +431,7 @@ if(newleads){
           <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="email" name="email" />
           <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="phone" name="phone"/>
         <input onChange={handlechange} className="px-2 py-1 outline-none rounded-md border-[1px] border-gray-200 my-2 w-[80%]" type="text" placeholder="source" name="source"/>
-           <p className="font-xs text-gray-400 ">tip: source should be only "Client Referral" or "Walk In"</p>
+           <p className="text-xs text-gray-400 ">tip: source should be only "Client Referral" or "Walk In"</p>
           <button onClick={handleOneSubmit} className="rounded-md bg-gray-900 text-white font-sans px-3 py-1 text-center font-semibold my-4">Submit</button>
 
          </div>
