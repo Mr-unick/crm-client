@@ -306,7 +306,7 @@ const stageColors = {
             return <span className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator?.name}
             <button onClick={() => {
             removecollborator(collabrator?._id);
-          }} className="font-bold text-white ml-3">X</button>
+          }} className="font-bold text-white ml-2">X</button>
             </span>;
           })} 
         </div>
