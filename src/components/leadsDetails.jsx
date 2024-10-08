@@ -136,6 +136,10 @@ const stageColors = {
     
     }));
     };
+  
+   const removecollborator =async (id) => {
+   console.log(id)
+    };
 
   
 
@@ -294,7 +298,11 @@ const stageColors = {
         </div>
         <div className="flex gap-5">
           {lead.collaborators?.map((collabrator) => {
-            return <p className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator?.name}</p>;
+            return <span className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator?.name}
+            <button onClick={() => {
+            removecollborator(collabrator?._id);
+          }} className="font-bold text-white">X</button>
+            </span>;
           })} 
         </div>
         {
