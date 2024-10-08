@@ -139,7 +139,7 @@ const stageColors = {
   
    const removecollborator =async (id) => {
    console.log(id)
-   await  updateLead(user?.token,lead._id,{deletecollaborator":id})
+   await updateLead(user?.token,lead._id,{deletecollaborator:id})
     };
 
   
