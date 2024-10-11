@@ -29,7 +29,7 @@ let level =user?.level;
 
   const navItems = [
     { icon: <Home size={20} />, label: "Dashboard", link: "/dash" },
-    { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainder" },
+    { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainders" },
     {
       icon: <BellDot size={20} />,
       label: "New Leads",
