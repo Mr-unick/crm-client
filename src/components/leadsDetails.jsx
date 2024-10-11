@@ -469,7 +469,10 @@ const LeadDetails = () => {
             </div>
           </div>
           <p className="text-gray-700 mb-4">{comment.comment}</p>
-
+{
+                comment?.imageUrl !== "none" && <a href={comment?.imageUrl} target="_blank">
+                  <img className="w-[50%] h-[50%] " src={comment?.imageUrl}/></a>
+              }
           {/* {file && (
             <div className="bg-white p-4 rounded-lg shadow-md">
               {file.type === "image" && (
