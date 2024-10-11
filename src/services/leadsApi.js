@@ -82,7 +82,7 @@ export const addLead = async (token, leadData) => {
 
 export const addComment = async (token, id,data) => {
  
- 
+ console.log(data,'comment')
   try {
     const response = await axios.post(
       `https://crm-server-zeta.vercel.app/leads/addcoment/${id}`,
