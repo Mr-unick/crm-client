@@ -243,9 +243,9 @@ const stageColors = {
           {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
             className="border-[1px] outline-none px-1 py-1 w-full"
-            defaultValue={lead?.Headcollaborator?.name}
+            
              onChange={handleupdate}
-            name="HeadCollaborator"
+            name="status"
           >
             <option value={'active'}>Active</option>
             <option value={'inactive'}>Inactive</option>
