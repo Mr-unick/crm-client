@@ -30,6 +30,7 @@ export const Leads = (props) => {
 
 const [activeTab, setActiveTab] = useState("All Leads");
 const [isOpen, setIsOpen] = useState(false);
+
 const [leads, setlead] = useState([]);
 const [search,setsearch]=useState(null);
 const [tab,setTab]=useState(false);
@@ -38,6 +39,7 @@ let loggedinuser = sessionStorage.getItem("user");
 let user = JSON.parse(loggedinuser);
 
 const toggleDrawer = useCallback((lead) => {
+  
       setlead(lead);
       setIsOpen(false?true:false);
     
@@ -49,19 +51,26 @@ const getleads=async ()=>{
 let res=await getLeads(user?.token,user?.level,user?.id);
 setlead(res)
 }
+
 useEffect(()=>{
 getleads()
 setlead(leads); 
+//sessionStorage.setItem('leads',JSON.stringify(leads))
+
 setsearch(null)
+console.log('loggg3')
+
 },[])
 
 useEffect(()=>{
-  getleads()
+  // getleads()
   setlead(leads); 
   setsearch(null)
-  },[tab])
+  console.log('loggg1')
+},[tab])
 
 useEffect(() => {
+  console.log('loggg2')
   if (search) {
     const filteredData = leads.filter(item => 
       item.name?.toLowerCase()?.includes(search.toLowerCase()) ||

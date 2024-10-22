@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Menu, X, Home, User, Briefcase, Inbox, Settings, Mail, UploadCloud, Users, BellDot, BellDotIcon } from "lucide-react";
 import { LoginContext } from "@/App";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 
@@ -29,7 +29,7 @@ let level =user?.level;
 
   const navItems = [
     { icon: <Home size={20} />, label: "Dashboard", link: "/dash" },
-    { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainders" },
+    { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainder" },
     {
       icon: <BellDot size={20} />,
       label: "New Leads",
@@ -83,13 +83,13 @@ let level =user?.level;
               <ul className="space-y-2 z-50">
                 {navItems.map((item, index) => (
                   <li key={index} className="z-50">
-                    <a
-                      href={item.link}
+                    <Link
+                      to={item.link}
                       className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
                     >
                       <span className="mr-3">{item.icon}</span>
                       <span>{item.label}</span>
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

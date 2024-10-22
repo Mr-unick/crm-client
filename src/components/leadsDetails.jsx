@@ -59,9 +59,12 @@ import { getCollaborators } from "@/services/collabratorApi";
 
 
 
-const LeadDeatilsTable = ({ lead, edit }) => {
+const LeadDeatilsTable = ({ leaddata, edit , SetLeadState ,setedit}) => {
+
+
 
 const[date ,setDate]=useState(new Date())
+const[lead,setLead]=useState(leaddata);
 const[remainder,Setremainder]=useState(null)
 const[updateleadData,setupdatelead]=useState({});
 const[loder,setLoder]=useState(false);
@@ -85,7 +88,6 @@ const getcollabrators = async (token) => {
 useEffect(()=>{
 getcollabrators(user?.token)
 
-
 },[edit])
 
 const stageColors = {
@@ -98,24 +100,24 @@ const stageColors = {
 
    const Prioritycolor = (lead) => {
     return (
-      (lead.priority === "high" && "bg-red-300") ||
-      (lead.priority === "low" && "bg-green-300") ||
-      (lead.priority === "medium" && "bg-yellow-300")
+      (lead?.priority === "high" && "bg-red-300") ||
+      (lead?.priority === "low" && "bg-green-300") ||
+      (lead?.priority === "medium" && "bg-yellow-300")
     );
   };
 
   const Activecolor = (lead) => {
-    return lead.status === "active" ? "text-blue-600" : "text-red-600";
+    return lead?.status === "active" ? "text-blue-600" : "text-red-600";
   };
 
   const Stagecolor = (lead) => {
     {
       return (
-        (lead.stage === "prospect" && "bg-green-400") ||
-        (lead.stage === "opportunity" && "bg-blue-400") ||
-        (lead.stage === "qualified" && "bg-orange-400") ||
-        (lead.stage === "nurture" && "bg-purple-400") ||
-        (lead.stage === "reprospect" && "bg-yellow-400")
+        (lead?.stage === "prospect" && "bg-green-400") ||
+        (lead?.stage === "opportunity" && "bg-blue-400") ||
+        (lead?.stage === "qualified" && "bg-orange-400") ||
+        (lead?.stage === "nurture" && "bg-purple-400") ||
+        (lead?.stage === "reprospect" && "bg-yellow-400")
       );
     }
   };
@@ -139,7 +141,7 @@ const stageColors = {
   
    const removecollborator =async (id) => {
     setLoder(true)
-   const res =await updateLead(user?.token,lead._id,{deletecollaborator:id})
+   const res =await updateLead(user?.token,lead?._id,{deletecollaborator:id})
      if(res.status==200){
       toast.success("Collborator Removed")
     }
@@ -151,13 +153,16 @@ const stageColors = {
   const saveChanges=async()=>{
 
     setLoder(true)
-    const res=await updateLead(user?.token,lead._id,updateleadData)
+    const res=await updateLead(user?.token,lead?._id,updateleadData)
     if(res.status==200){
       toast.success("Changes Saved")
+      
     }
-
+    setLead(res.lead)
+    SetLeadState(res.lead)
+    setedit(false)
     setLoder(false)
-
+  
   }
 
   
@@ -165,9 +170,12 @@ const stageColors = {
 
 
 
+
   return (
     <div className="w-full mb-10">
-      <div className="grid grid-cols-2 gap-4 text-sm lg:w-full text-[12px] lg:text-[15px]">
+   {
+     lead !== null ?   <>
+     <div className="grid grid-cols-2 gap-4 text-sm lg:w-full text-[12px] lg:text-[15px]">
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Mail size={18} /> Email
         </div>
@@ -176,13 +184,13 @@ const stageColors = {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.email}
+              defaultValue={lead?.email}
               onChange={handleupdate}
               name="email"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.email
+            lead?.email
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -195,11 +203,11 @@ const stageColors = {
               readOnly={false}
               onChange={handleupdate}
               name="phone"
-              defaultValue={lead.phone}
+              defaultValue={lead?.phone}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-             <a href={`https://wa.me/${lead.phone}`} target="_blank" rel="noopener noreferrer">{lead.phone}</a>
+             <a href={`https://wa.me/${lead?.phone}`} target="_blank" rel="noopener noreferrer">{lead?.phone}</a>
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -210,13 +218,13 @@ const stageColors = {
             <input
               type="text"
               readOnly={false}
-              defaultValue={lead.secondaryNumber}
+              defaultValue={lead?.secondaryNumber}
                onChange={handleupdate}
               name="secondaryNumber"
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.secondaryNumber || "none"
+            lead?.secondaryNumber || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
@@ -229,40 +237,40 @@ const stageColors = {
               readOnly={false}
                onChange={handleupdate}
               name="address"
-              defaultValue={lead.address}
+              defaultValue={lead?.address}
               className="border-[1px] outline-none px-1 py-1 w-full"
             />
           ) : (
-            lead.address || "none"
+            lead?.address || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pause size={18} /> Status
         </div>
-        <div className={Activecolor( lead.status)}>
+        <div className={Activecolor( lead?.status)}>
           {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
             className="border-[1px] outline-none px-1 py-1 w-full"
-            
+            defaultValue={lead?.Headcollaborator?.name}
              onChange={handleupdate}
-            name="status"
+            name="HeadCollaborator"
           >
             <option value={'active'}>Active</option>
             <option value={'inactive'}>Inactive</option>
           </select>
             
           ) : (
-            lead.status || "none"
+            lead?.status || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <ShieldCheck size={18} /> Priority
         </div>
-        <div className={priorityColors( lead.priority)}>
+        <div className={priorityColors( lead?.priority)}>
           {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.priority}
+              defaultValue={lead?.priority}
                onChange={handleupdate}
               name="priority"
             >
@@ -271,17 +279,17 @@ const stageColors = {
               <option value="low">Low</option>
             </select>
           ) : (
-            lead.priority
+            lead?.priority
           )}
         </div>
-        <div className={`font-semibold flex justify-start gap-2 items-center`+ Stagecolor(lead.stage )}>
+        <div className={`font-semibold flex justify-start gap-2 items-center`+ Stagecolor(lead?.stage )}>
           <Route size={18} /> Stage
         </div>
         <div>
           {(edit &&( (lead?.Headcollaborator?.email === user.email) || level==="admin" )) ? (
             <select
               className="border-[1px] outline-none px-1 py-1 w-full"
-              defaultValue={lead.stage}
+              defaultValue={lead?.stage}
                onChange={handleupdate}
               name="stage"
             >
@@ -295,14 +303,14 @@ const stageColors = {
               <option value="lost">Lost</option>
             </select>
           ) : (
-            lead.stage || "none"
+            lead?.stage || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Users size={18} /> Collaborators
         </div>
         <div className="flex gap-5">
-          {lead.collaborators?.map((collabrator) => {
+          {lead?.collaborators?.map((collabrator) => {
             return <span className="rounded-md bg-blue-500 px-3 py-1 text-white text-xs font-semibold">@{collabrator?.name}
             <button onClick={() => {
             removecollborator(collabrator?._id);
@@ -374,7 +382,7 @@ const stageColors = {
         <div className="font-semibold flex justify-start gap-2 items-center">
           <Pin size={18} /> Branch Code
         </div>
-        <div>{lead.branchCode}</div>
+        <div>{lead?.branchCode}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <BellRing size={18} /> Reminder
         </div>
@@ -383,17 +391,17 @@ const stageColors = {
             // <DatePickerDemo Setremainder={Setremainder} onChange={handleupdate}/>
             <input type="date" name="leadReminder" onChange={handleupdate} />
           ) : (
-            (lead.leadReminder)?.slice(0,10) || "none"
+            (lead?.leadReminder)?.slice(0,10) || "none"
           )}
         </div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CircleHelp size={18} /> Source
         </div>
-        <div>{lead.source}</div>
+        <div>{lead?.source}</div>
         <div className="font-semibold flex justify-start gap-2 items-center">
           <CalendarClock size={18} /> Date Time Added
         </div>
-        <div>{formatTimestamp(lead.dateTimeAdded)}</div>
+        <div>{formatTimestamp(lead?.dateTimeAdded)}</div>
       </div>
       {
         edit && <button onClick={saveChanges} className="px-3 py-1 mt-8 rounded-md bg-black text-white">
@@ -403,6 +411,11 @@ const stageColors = {
         </button>
   
       }
+     </>
+     : <>
+     <p>Loading</p>
+     </>
+   }
         </div>
   );
 };
@@ -416,6 +429,13 @@ const LeadDetails = () => {
   const { handleNext, handlePrev ,lead} =useContext(LeadContext);
   
   const[edit,setedit]=useState(false);
+  const[leadState,SetLeadState]=useState(lead);
+
+
+
+  useEffect(()=>{
+console.log('updated Lead',leadState)
+  },[SetLeadState,leadState])
 
 
 
@@ -438,20 +458,20 @@ const LeadDetails = () => {
         >
           <Pencil size={18} color="gray" />
         </button>
-        <button onClick={handlePrev}>
+        {/* <button onClick={handlePrev}>
           <CircleArrowLeft size={18} color="gray" />
         </button>
         <button onClick={handleNext}>
           <CircleArrowRight size={18} color="gray" />
-        </button>
+        </button> */}
       </div>
       <h2 className="text-2xl font-bold my-6">{lead?.name}</h2>
 
-      <LeadDeatilsTable lead={lead} edit={edit} />
+      <LeadDeatilsTable leaddata={leadState} SetLeadState={SetLeadState} edit={edit} setedit={setedit} />
 
-      {edit && <CommentSection lead={lead} />}
+       <CommentSection lead={leadState} SetLeadState={SetLeadState} setedit={setedit} />
 
-      {lead?.comments?.map((comment, index) => (
+      {leadState?.comments?.map((comment, index) => (
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
             <span  className="w-10 h-10 rounded-full text-center bg-blue-700 text-white flex justify-center items-center text-xl">{
@@ -463,45 +483,41 @@ const LeadDetails = () => {
                 JSON.parse(comment?.collaborator)?.name
                 }
               </p>
+             
               <p className="text-gray-600 text-sm">
                 {formatTimestamp(comment.dateTimeAdded)}
               </p>
             </div>
           </div>
           <p className="text-gray-700 mb-4">{comment.comment}</p>
-{
+
+          {
                 comment?.imageUrl !== "none" && <a href={comment?.imageUrl} target="_blank">
                   <img className="w-[50%] h-[50%] " src={comment?.imageUrl}/></a>
               }
-          {/* {file && (
-            <div className="bg-white p-4 rounded-lg shadow-md">
-              {file.type === "image" && (
-                <img
-                  src={file.url}
-                  alt="Uploaded Image"
-                  className="max-w-full"
-                />
-              )}
-              {file.type === "pdf" && (
+
+        
+            
+              {/* { comment?.pdfUrl !== "none"  && (
                 <div>
                   <embed
-                    src={file.url}
+                    src={comment?.pdfUrl}
                     type="application/pdf"
                     width="100%"
                     height="500"
                   />
                   <a
-                    href={file.url}
+                    href={comment?.pdfUrl}
                     download
                     className="inline-block mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                   >
                     Download PDF
                   </a>
                 </div>
-              )}
+              )} */}
             </div>
-          )} */}
-        </div>
+        
+      
       ))}
     </div>
   );

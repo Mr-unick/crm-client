@@ -1,4 +1,6 @@
+import { formatTimestamp } from "@/utils/datemethods";
 import { Bell, MessageSquareText  } from "lucide-react";
+
 export const BoardCard = ({lead}) => {
   return (
   
@@ -7,7 +9,6 @@ export const BoardCard = ({lead}) => {
           <h3 className="text-md font-semibold">{lead.name}</h3>
         </div>
 
-        
         { lead?.leadReminder &&
           <div className="flex items-center justify-between my-2">
           <div className="text-sm text-gray-500 flex justify-start items-center gap-1">
