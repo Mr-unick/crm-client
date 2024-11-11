@@ -63,7 +63,7 @@ const CommentSection = ({ lead }) => {
 
     const formData = new FormData();
     formData.append("comment", comment);
-    if (image) {
+    if (image !== null) {
       formData.append("image", image);
     }
     if (pdf) {
