@@ -2,7 +2,7 @@ import axios from "axios";
 
 // const baseUrl = "https://crm-server-zeta.vercel.app";
 
- const baseUrl = "http://api.livincompany.co:4000/";
+ const baseUrl = "http://api.livincompany.co:4000";
 
 
 export const signInAdmin = async (Admindata) => {
