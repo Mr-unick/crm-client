@@ -1,12 +1,12 @@
 import axios from "axios";
 
-const baseUrl = "https://livincompany.co:4000";
+const baseUrl = "https://api.livincompany.co";
 
 // Collaborator API calls
 export const addCollaborator = async (token, collaboratorData) => {
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/collabrators/addcollabrator`,
+      `https://api.livincompany.co/collabrators/addcollabrator`,
       collaboratorData,
       {
         headers: { Authorization: token },
@@ -26,7 +26,7 @@ export const addCollaborator = async (token, collaboratorData) => {
 export const signInCollaborator = async (collaboratorData) => {
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/collabrators/signin`,
+      `https://api.livincompany.co/collabrators/signin`,
       collaboratorData
     );
     console.log("Sign In Collaborator Response:", response.data);
@@ -43,7 +43,7 @@ export const signInCollaborator = async (collaboratorData) => {
 export const getCollaborators = async (token) => {
   try {
     const response = await axios.get(
-      `https://crm-server-zeta.vercel.app/collabrators/getcollabrators`,
+      `https://api.livincompany.co/collabrators/getcollabrators`,
       {
         headers: { Authorization: token },
       }
@@ -62,7 +62,7 @@ export const getCollaborators = async (token) => {
 export const deleteCollaborator = async (token, id) => {
   try {
     const response = await axios.delete(
-      `https://crm-server-zeta.vercel.app/collabrators/delete/${id}`,
+      `https://api.livincompany.co/collabrators/delete/${id}`,
       {
         headers: { Authorization: token },
       }
@@ -81,7 +81,7 @@ export const deleteCollaborator = async (token, id) => {
 export const updateCollaborator = async (token, id, collaboratorData) => {
   try {
     const response = await axios.post(
-      `https://crm-server-zeta.vercel.app/collaborators/update/${id}`,
+      `https://api.livincompany.co/collaborators/update/${id}`,
       collaboratorData,
       {
         headers: { Authorization: token },
