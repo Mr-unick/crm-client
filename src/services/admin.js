@@ -1,6 +1,6 @@
 import axios from "axios";
 
- const baseUrl = "https://crm-server-zeta.vercel.app";
+ const baseUrl = "https://api.livincompany.co";
 
 // const baseUrl = "http://api.livincompany.co:4000";
 
