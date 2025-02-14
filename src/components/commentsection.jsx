@@ -6,7 +6,7 @@ import { addComment } from "@/services/leadsApi";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
 
-const CommentSection = ({ lead }) => {
+const CommentSection = ({ lead ,SetLeadState }) => {
   const [data, setdata] = useState({});
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
@@ -87,6 +87,7 @@ const CommentSection = ({ lead }) => {
 
      if (res.status == 200) {
       setloader(false)
+       SetLeadState(res.lead)
        toast.success(res.message);
 
      } else {
