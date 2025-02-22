@@ -1,115 +1,131 @@
 import { FileUpIcon, Image, Upload } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
-import axios from "axios";
 import { addComment } from "@/services/leadsApi";
 import { toast } from "react-toastify";
 import { CircularProgress } from "@mui/material";
+import { Form, useFetcher } from "react-router-dom";
 
-const CommentSection = ({ lead ,SetLeadState }) => {
-  const [data, setdata] = useState({});
+const CommentSection = ({ lead, SetLeadState }) => {
+
+
   const [comment, setComment] = useState("");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [pdf, setPdf] = useState(null);
-  const [submitted, setSubmitted] = useState(false); 
-  const[loader,setloader]=useState(false)
+  const [loader, setLoader] = useState(false);
+  const[ fileloader,setfileloader]=useState(false);
 
-  let loggedinuser = sessionStorage.getItem("user");
-  let user = JSON.parse(loggedinuser);
+  const imagedata = useRef();
+
+  const loggedinuser = sessionStorage.getItem("user");
+  const user = JSON.parse(loggedinuser);
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
   };
 
-  const handleImageUpload = (e) => {
+const statechange = ()=>{
+  setImage(sessionStorage.getItem('imageurl'))
+  setPdf(sessionStorage.getItem('pdfurl'))
+  setfileloader(true)
+}
+
+
+  const handleImageUpload = async (e) => {
+ 
+    setfileloader(true)
     const file = e.target.files[0];
-   
-    setImage(file);
-    // const reader = new FileReader();
+    const formdatatat = new FormData();
 
-    // reader.onloadend = () => {
-    //   setImage(reader.result);
-    // };
+    formdatatat.append('image',file)
+    
+    formdatatat.append('comment','null')
 
-    // if (file) {
-    //   reader.readAsDataURL(file);
-    // }
+    // imagedata.current = file;
+
+    const res = await addComment(user?.token, lead?._id, formdatatat);
+    if(res.status == 200){
+      alert('Image Uploaded')
+    }
+
+    sessionStorage.setItem('imageurl',res.data.
+      imageUrl
+      )
+    setImage(res.data.imageUrl);
+    statechange()
+    setfileloader(false)
   };
-
-  const handlePdfUpload = (e) => {
+  
+  const handlePdfUpload =async (e) => {
+    setfileloader(true)
     const file = e.target.files[0];
-    setPdf(file)
-    // const reader = new FileReader();
+    console.log("Selected PDF file:", file); // Debugging
 
-    // reader.onloadend = () => {
-    //   setPdf(reader.result);
-    // };
+    const formdatatat = new FormData();
 
-    // if (file) {
-    //   reader.readAsDataURL(file);
-    // }
+    formdatatat.append('pdf',file)
+    
+    formdatatat.append('comment','null')
+
+    // imagedata.current = file;
+
+    const res = await addComment(user?.token, lead?._id, formdatatat);
+    if(res.status == 200){
+      alert('Pdf Uploaded')
+    }
+
+    sessionStorage.setItem('pdfurl',res.data.
+      pdfUrl
+      )
+      setPdf(res.data.
+        pdfUrl);
+    e.target.value = null; 
+    statechange()
+    setfileloader(false)
   };
-
   const handleSubmit = async (e) => {
-    setloader(true)
     e.preventDefault();
+    setLoader(true);
 
-    // setdata({
-    //   comment: comment,
-    //   imageUrl: image,
-    //   pdfUrl: pdf,
-    //   collaborator: { name: user.name, email: user.email, level: user.level },
-    // });
-
-    const formData = new FormData();
-    formData.append("comment", comment);
-    if (image) {
-      formData.append("image", image);
-    }
-    if (pdf) {
-      formData.append("pdf", pdf);
-    }
-
-    // Append collaborator object as JSON string
     const collaborator = {
       name: user?.name,
       email: user?.email,
       level: user?.level,
     };
-    
-    formData.append("collaborator", JSON.stringify(collaborator));
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+    const data ={
+      collaborator:collaborator,
+      comment : comment,
+      imageUrl : sessionStorage.getItem('imageurl'),
+      pdfUrl : sessionStorage.getItem('pdfurl')
+    };
+
+    try {
+      const res = await addComment(user?.token, lead?._id, data);
+
+      if (res.status === 200) {
+        toast.success(res.message);
+        SetLeadState(res.lead);
+        setComment("");
+        setImage(null);
+        setPdf(null);
+        sessionStorage.removeItem('imageurl')
+        sessionStorage.removeItem('pdfurl')
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error) {
+      toast.error("An error occurred while submitting the form.");
+    } finally {
+      setLoader(false);
     }
-
-     let res = await addComment(user?.token, lead?._id, formData);
-
-     if (res.status == 200) {
-      setloader(false)
-       SetLeadState(res.lead)
-       toast.success(res.message);
-
-     } else {
-      setloader(false);
-       toast.error(res.message);
-     }
-
-    setSubmitted(true);
   };
 
+  useEffect(()=>{
   
-
+  },[image])
   
-  useEffect(() => {
-    if (submitted) {
-      setComment("");
-      setImage(null);
-      setPdf(null);
-      setSubmitted(false); 
-    }
-  }, [data, submitted]);
-
+console.log(image)
   return (
     <div className="bg-gray-100 p-4 rounded-md">
       <div className="flex gap-5">
@@ -126,17 +142,14 @@ const CommentSection = ({ lead ,SetLeadState }) => {
               onChange={handleImageUpload}
             />
             <span className="text-sm text-gray-500">
-              {image ? "Image selected" : "Upload an image (optional)"}
+              {fileloader ? "wait..." : "Upload an image (optional)"}
             </span>
           </div>
         </div>
-       
+
         <div className="flex items-center mb-4">
           <label htmlFor="pdf-upload" className="cursor-pointer mr-2">
-            <FileUpIcon
-              className="text-gray-500 hover:text-gray-700"
-              size={24}
-            />
+            <FileUpIcon className="text-gray-500 hover:text-gray-700" size={24} />
           </label>
           <input
             id="pdf-upload"
@@ -146,10 +159,13 @@ const CommentSection = ({ lead ,SetLeadState }) => {
             onChange={handlePdfUpload}
           />
           <span className="text-sm text-gray-500">
-            {pdf ? "PDF selected" : "Upload a PDF (optional)"}
+          {fileloader ? "wait..." : "Upload an pdf (optional)"}
           </span>
         </div>
       </div>
+
+     
+    
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <textarea
@@ -161,7 +177,7 @@ const CommentSection = ({ lead ,SetLeadState }) => {
           ></textarea>
         </div>
 
-        <Button type="submit" className="w-32">
+        <Button type="submit" className="w-32" disabled={loader}>
           {loader ? <CircularProgress color="inherit" className="text-sm" size={25} /> : "Submit"}
         </Button>
       </form>

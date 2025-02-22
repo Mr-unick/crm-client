@@ -469,18 +469,18 @@ console.log('updated Lead',leadState)
 
       <LeadDeatilsTable leaddata={leadState} SetLeadState={SetLeadState} edit={edit} setedit={setedit} />
 
-       <CommentSection lead={leadState} SetLeadState={SetLeadState} setedit={setedit} />
-
-      {leadState?.comments?.map((comment, index) => (
+       <CommentSection lead={leadState} SetLeadState={SetLeadState} setedit={setedit}  />
+ 
+      { leadState?.comments && leadState?.comments?.map((comment, index) => (
         <div className="my-7 text-sm">
           <div className="flex items-center mb-2">
             <span  className="w-10 h-10 rounded-full text-center bg-blue-700 text-white flex justify-center items-center text-xl">{
-              JSON.parse(comment?.collaborator)?.name?.charAt(0).toUpperCase()}</span>
+              comment?.collaborator?.name?.charAt(0).toUpperCase()}</span>
             <div className="ml-2">
               <p className="text-gray-800 font-semibold">
-                {
 
-                JSON.parse(comment?.collaborator)?.name
+                { comment?.collaborator && 
+                comment?.collaborator?.name
                 }
               </p>
              
@@ -496,29 +496,28 @@ console.log('updated Lead',leadState)
                   <img className="w-[50%] h-[50%] " src={comment?.imageUrl}/></a>
               }
 
-        
-            
-              {/* { comment?.pdfUrl !== "none"  && (
-                <div>
-                  <embed
-                    src={comment?.pdfUrl}
-                    type="application/pdf"
-                    width="100%"
-                    height="500"
-                  />
-                  <a
-                    href={comment?.pdfUrl}
-                    download
-                    className="inline-block mt-2 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                  >
-                    Download PDF
-                  </a>
-                </div>
-              )} */}
+{comment?.pdfUrl !== "none" && (
+  <div className="w-full rounded-lg overflow-hidden border border-gray-200">
+   
+    <div className="p-4 bg-white border-t border-gray-200">
+      <a
+        href={comment?.pdfUrl}
+        download
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+      >
+        Download PDF
+      </a>
+    </div>
+  </div>
+)}
+              
             </div>
-        
       
       ))}
+
+      
     </div>
   );
 };
