@@ -500,7 +500,7 @@ console.log('updated Lead',leadState)
   <div className="w-full rounded-lg overflow-hidden border border-gray-200">
    
     <div className="p-4 bg-white border-t border-gray-200">
-      <a
+{/*       <a
         href={comment?.pdfUrl}
         download
         target="_blank"
@@ -508,7 +508,7 @@ console.log('updated Lead',leadState)
         className="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
       >
         Download PDF
-      </a>
+      </a> */}
     </div>
   </div>
 )}
