@@ -40,11 +40,7 @@ let level =user?.level;
       label: "Collabrators",
       link: "/dash/collabrators",
     },
-    {
-      icon: <UploadCloud size={20} />,
-      label: "Upload Leads ",
-      link: "/dash/uploadleads",
-    },
+    
     { icon: <Mail size={20} />, label: "Email List", link: "/dash/emails" },
     { icon: <Settings size={20} />, label: "Settings", link: "/dash" },
   ];
@@ -115,6 +111,17 @@ let level =user?.level;
                       <BellDotIcon size={20} />
                     </span>
                     <span>Remainders</span>
+                  </a>
+                </li>
+               <li className="z-50">
+                  <a
+                    href={"/dash/uploadleads"}
+                    className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
+                  >
+                    <span className="mr-3">
+                     <UploadCloud size={20} />
+                    </span>
+                    <span>upload Leads</span>
                   </a>
                 </li>
               </ul>
