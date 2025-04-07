@@ -51,12 +51,13 @@ function App() {
         <Routes>
           <Route path="/remainders" element={<RemainderPage />} />
           <Route path="/dash" element={<Protected isauth={isauth} />}>
- <Route path="uploadleads" element={<UploadLeads />} />
+             <Route path="newleads" element={<NewLeadsTable />} />
+{/*  <Route path="uploadleads" element={<UploadLeads />} /> */}
             <Route path="" element={<Leads />} />
             <Route path="" element={<AdminRoutes />}>
               <Route path="collabrators" element={<CollabratorTable />} />{" "}
-{/*               <Route path="uploadleads" element={<UploadLeads />} /> */}
-              <Route path="newleads" element={<NewLeadsTable />} />
+              <Route path="uploadleads" element={<UploadLeads />} />
+{/*               <Route path="newleads" element={<NewLeadsTable />} /> */}
 
             </Route>
           </Route>
