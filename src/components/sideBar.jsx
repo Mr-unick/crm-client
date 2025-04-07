@@ -32,8 +32,8 @@ let level =user?.level;
     { icon: <BellDotIcon size={20} />, label: "Remainder", link: "/remainders" },
     {
       icon: <BellDot size={20} />,
-      label: "New Leads",
-      link: "/dash/newleads",
+      label: "Upload Leads",
+      link: "/dash/uploadleads",
     },
     {
       icon: <Users size={20} />,
@@ -115,13 +115,13 @@ let level =user?.level;
                 </li>
                <li className="z-50">
                   <a
-                    href={"/dash/uploadleads"}
+                    href={"/dash/newleads"}
                     className="flex items-center px-6 py-3 hover:bg-gray-700 rounded-md transition duration-200"
                   >
                     <span className="mr-3">
-                     <UploadCloud size={20} />
+                     <BellDot size={20} />
                     </span>
-                    <span>upload Leads</span>
+                    <span>New Leads</span>
                   </a>
                 </li>
               </ul>
